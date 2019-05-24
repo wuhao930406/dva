@@ -1,0 +1,15 @@
+{
+  "extraBabelPlugins": [
+    ["import", { "libraryName": "antd", "libraryDirectory": "es", "style": true }]
+  ],
+  "theme": {
+    "@primary-color": "#1bbcff"
+  },
+  "proxy": {
+    "/edu": {
+      "target":"http://localhost:7001/",
+      "changeOrigin": true,
+      "pathRewrite": { "^/edu" : "" }
+    }
+  }
+}
