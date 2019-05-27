@@ -53,7 +53,7 @@ class Login extends Component{
   
     this.props.form.validateFields((err, values) => {
       if (!err) {
-       //do
+       //登录！！
         this.setNewState("login",{username:values.username,password:values.password},(res)=>{
           this.setNewState("redirect",{url:"/"})
         })
@@ -73,11 +73,9 @@ class Login extends Component{
           { 
             time.map((item,i)=>{
                return !item||item=="|"?<span key={i} className={styles.jiange}></span>:<span key={i} className={styles.zifu}>{item}</span> 
-
             })
           }
         </p>
-
         <img className={styles.logo} src="./assets/images/logo.png" alt=""/>
         <div className={styles.loginbox}>
           <div className={styles.icongroup}>

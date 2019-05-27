@@ -1,9 +1,15 @@
-import React,{Component} from 'react';
+import React, { Component } from 'react';
 import { connect } from 'dva';
 import styles from './IndexPage.css';
-import { Drawer, Button,Row,Col  } from 'antd';
-import {Link} from 'dva/router'
+import {
+  Icon, Menu, Dropdown, Drawer, 
+  Button, Row, Col, Layout, Avatar, Divider
+} from 'antd';
+import { Link } from 'dva/router';
+import ScrollBar from '../components/ScrollBar';
+import IndexRouterConfig from '../indexrouter'
 
+const { Header, Content, Footer } = Layout;
 
 
 class IndexPage extends Component {
@@ -22,34 +28,76 @@ class IndexPage extends Component {
   };
 
   render() {
-    const models = ['Model1','Model2','Model3','Model4','Model5','Model6']
+    const models = ['模块1', '模块2', '模块3', '模块4', '模块5', '模块6'];
+    const menu = (
+      <Menu>
+        <Menu.Item>
+          <a target="_blank" rel="noopener noreferrer" href="http://www.alipay.com/">
+            <Icon type='edit'></Icon>
+            &nbsp;修改密码
+          </a>
+        </Menu.Item>
+        <Menu.Divider />
+        <Menu.Item>
+          <Link to='/login' >
+            <Icon type="logout" />
+            &nbsp;退出登录
+          </Link>
+        </Menu.Item>
+      </Menu>
+    );
     return (
-      <div>
-        <Button type="primary" onClick={this.showDrawer}>
-          Open
-        </Button>
+      <Layout style={{ display: "flex", flexDirection: "column", height: "100%" }}>
+        <Header className={styles.indexheader}>
+          <div className={styles.flexrow}>
+            <img src="./assets/images/logos.png" alt="" />
+            &nbsp;&nbsp;
+            <Divider type='vertical'></Divider>
+            &nbsp;&nbsp;
+            <Icon type="menu-unfold" style={{ fontSize: 20 }} onClick={this.showDrawer} />
+          </div>
+          <div className={styles.indexuser}>
+            <Dropdown trigger={["hover","click"]} overlay={menu}>
+              <Avatar style={{ backgroundColor: "#1bbcff",cursor: "pointer"}} icon="user">
+            </Avatar>
+            </Dropdown>
+
+          </div>
+        </Header>
+        <Content className={styles.indexcontent}>
+          <div style={{ height: "100%", overflow: "auto", background: "#fff",overflowX:"hidden" }}>
+            <ScrollBar>
+                  <IndexRouterConfig></IndexRouterConfig>
+            </ScrollBar>
+          </div>
+
+        </Content>
+        <Footer className={styles.indexfooter}>
+          <p>Ant Design ©2018 Created by Ant UED</p>
+        </Footer>
+
         <Drawer
           placement="top"
           closable={false}
           onClose={this.onClose}
           visible={this.state.visible}
         >
-          <img src="./assets/images/logos.png" className={styles.logos} alt=""/>
+          <img src="./assets/images/logos.png" className={styles.logos} alt="" />
           <Row gutter={24} className={styles.indexrow}>
             {
-              models.map((item)=>( 
-              <Col xs={8} sm={8} md={8} lg={4} xl={4} className={styles.indexcol}>
-                <p style={{textAlign:"center"}}>{item}</p>
-              </Col>))
+              models.map((item) => (
+                <Col key={item} xs={8} sm={8} md={8} lg={4} xl={4} className={styles.indexcol}>
+                  <p style={{ textAlign: "center" }}>{item}</p>
+                </Col>))
             }
 
 
 
-            
+
           </Row>
-          
+
         </Drawer>
-      </div>
+      </Layout>
     );
   }
 }
