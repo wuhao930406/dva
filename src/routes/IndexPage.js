@@ -45,7 +45,8 @@ class IndexPage extends Component {
           </Link>
         </Menu.Item>
       </Menu>
-    );
+    ),
+    w = document.body.clientWidth;
     return (
       <Layout style={{ display: "flex", flexDirection: "column", height: "100%" }}>
         <Header className={styles.indexheader}>
@@ -65,9 +66,12 @@ class IndexPage extends Component {
           </div>
         </Header>
         <Content className={styles.indexcontent}>
-          <div style={{ height: "100%", overflow: "auto", background: "#fff",overflowX:"hidden" }}>
+          <div style={{ height: "100%", overflow: "auto", background: "#fff",overflowX:"hidden"
+          }}>
             <ScrollBar>
-                  <IndexRouterConfig></IndexRouterConfig>
+                  <div style={{padding:w<500?"12px 29px 30px 12px":12 }}>
+                    <IndexRouterConfig></IndexRouterConfig>
+                  </div>  
             </ScrollBar>
           </div>
 

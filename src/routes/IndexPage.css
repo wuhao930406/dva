@@ -17,9 +17,10 @@
   position: relative;
 }
 .logo{
-  width: 160px;
+  max-width: 150px;
+  width:30%;
   display: block;
-  margin: 0px auto 80px auto;
+  margin: 0px auto 60px auto;
 }
 .loginbox{
   width:90%;
@@ -30,7 +31,8 @@
   overflow: visible;
   position: relative;
   box-shadow: 0px 0px 4px rgba(0,0,0,0.4);
-  margin-bottom: 10% 
+  margin-bottom: 10%;
+  z-index: 99999; 
 }
 .loginbox .icongroup{
   width: 100%;
@@ -89,7 +91,7 @@ button,img{
   margin-top: 1em;
 }
 .indexheader{
-  background-color: #ffffff;
+  background-color: #ffffff !important;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -179,36 +181,40 @@ button,img{
   text-align: center;
   margin: 0;
 }
-.iconp:hover{
+.flexcolumn:hover .iconp{
   color:#1bbcff
 }
 .banner{
-  width:100%;
   margin:6px 6px 12px 6px;
   background:url(../assets/images/timg.jpg) no-repeat;
   background-size:cover;
-  background-position:center;
+  background-position:left center;
   position:relative;
   overflow: hidden;
 }
 .says{
   background-color: transparent;
   position: absolute;
-  right: -600px;
+  right: -700px;
   bottom: 0;
   border-top:200px solid transparent;
   border-right:200px solid transparent;
   border-bottom:500px solid rgba(0,0,0,0.4);
   border-left:200px solid transparent;
-  transition:all 0.4s;
-  animation: yoji linear 1.5s ;
+  transition:all 1s;
+  animation: yoji linear 0.6s ;
+}
+.banner:hover .says{
+  right:-1200px;
+  bottom:-200px;
+  transition:all 1s;
 }
 @keyframes yoji{
   from{
     right:-1200px;
     bottom:-200px;
   }to{
-    right:-600px;
+    right:-700px;
     bottom:0px;
   }
 }
@@ -216,49 +222,40 @@ button,img{
   overflow: hidden;
 }
 .says p:first-child{
-  width: 250px;
+  width: 190px;
   position: absolute;
-  left: -60px;
-  bottom: -200px;
+  left: -100px;
+  top: 558px;
   color: #ffffff;
-  text-align: right;
+  text-align: left;
+  border: rgba(255,255,255,0.2) dashed 1px;
+  padding: 10px;
+  text-indent: 28px;
 }
-.says p:nth-child(2){
-  width:260px;
-  position: absolute;
-  left: -70px;
-  bottom: -225px;
-  color: #ffffff;
-  text-align: right;
+.model1 :global .ant-card-body{
+  padding: 10px !important;
 }
-.says p:nth-child(3){
-  width:270px;
-  position: absolute;
-  left: -80px;
-  bottom: -250px;
-  color: #ffffff;
-  text-align: right;
+:global .ant-upload-list-item-info > span {
+	display: block;
+	height: 100%;
 }
-.says p:nth-child(4){
-  width:280px;
-  position: absolute;
-  left: -90px;
-  bottom: -285px;
-  color: #ffffff;
-  text-align: right;
+:global .ant-upload-list-picture-card .ant-upload-list-item {
+	float: left !important;
+	width: 30% !important;
+  height:100px;
+  max-width:120px;
+	margin: 4px !important;
 }
-.says p:nth-child(5){
-  width:300px;
-  position: absolute;
-  left: -110px;
-  bottom: -310px;
-  color: #ffffff;
-  text-align: right;
+:global .ant-upload.ant-upload-select-picture-card {
+  width: 30% !important;
+  height:100px;
+  max-width:120px;
+  float: left !important;
+  margin: 4px !important;
 }
-
-
-
-
+:global .ant-upload-list-picture-card{
+  float: none !important
+}
 
 
 

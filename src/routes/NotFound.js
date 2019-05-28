@@ -14,7 +14,7 @@ const NotFound = ({children}) => {
       <div className={styles.tip}>
           没有找到您要的页面哦~
           <br/>
-          <Tag color="#2db7f5" style={{paddingBottom:2}}>
+          <Tag color="#2db7f5">
             <Icon type="link" />
             <Link to='/main/index'>点击返回首页</Link>
           </Tag>
