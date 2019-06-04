@@ -51,7 +51,7 @@ class IndexPage extends Component {
       <Layout style={{ display: "flex", flexDirection: "column", height: "100%" }}>
         <Header className={styles.indexheader}>
           <div className={styles.flexrow}>
-            <img src="./assets/images/logos.png" alt="" />
+          <Link to='/' ><img src="./assets/images/logos.png" alt="" /></Link>
             &nbsp;&nbsp;
             <Divider type='vertical'></Divider>
             &nbsp;&nbsp;
@@ -69,7 +69,7 @@ class IndexPage extends Component {
           <div style={{ height: "100%", overflow: "auto", background: "#fff",overflowX:"hidden"
           }}>
             <ScrollBar>
-                  <div style={{padding:w<500?"12px 29px 30px 12px":12 }}>
+                  <div style={{padding:w<500?"12px 29px 30px 12px":12,height:"100%" }}>
                     <IndexRouterConfig></IndexRouterConfig>
                   </div>  
             </ScrollBar>
@@ -94,9 +94,6 @@ class IndexPage extends Component {
                   <p style={{ textAlign: "center" }}>{item}</p>
                 </Col>))
             }
-
-
-
 
           </Row>
 

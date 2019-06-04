@@ -1,6 +1,7 @@
-import { Upload, Icon, Modal } from 'antd';
+import { Upload, Icon, Modal,Input } from 'antd';
 import React from 'react'
-
+import styles from './style.css';
+import Item from 'antd/lib/list/Item';
 
 function getBase64(file) {
   return new Promise((resolve, reject) => {
@@ -15,10 +16,10 @@ class Uploadpic extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-    previewVisible: false,
-    previewImage: '',
-    fileList:props.fileList 
-  };
+      previewVisible: false,
+      previewImage: '',
+      fileList:props.fileList,
+    };
   }
 
   handleCancel = () => this.setState({ previewVisible: false });
@@ -27,9 +28,9 @@ class Uploadpic extends React.Component {
     if (!file.url && !file.preview) {
       file.preview = await getBase64(file.originFileObj);
     }
-
     this.setState({
       previewImage: file.url || file.preview,
+      previewUrl:file.jumpurl,
       previewVisible: true,
     });
   };
@@ -43,12 +44,22 @@ class Uploadpic extends React.Component {
 
   handleChange = ({ fileList }) => this.setState({ fileList });
 
+
+  componentWillReceiveProps(nextProps){
+    if(this.props.fileList!=nextProps.fileList){
+      this.setState({
+        fileList:nextProps.fileList
+      })
+    }
+  }
+
   render() {
-    const { previewVisible, previewImage, fileList } = this.state,
+    const { previewVisible, previewImage, fileList,previewUrl } = this.state,
     {num} = this.props;
     const uploadButton = (
       <div>
-        <div style={{width:"100%",height:86,background:"url(../assets/images/upload.png) no-repeat center",backgroundSize:"contain"}}></div>
+        <div className={styles.upload} >
+        </div>
       </div>
     );
     return (
@@ -65,6 +76,25 @@ class Uploadpic extends React.Component {
         </Upload>
         <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
           <img alt="example" style={{ width: '100%' }} src={previewImage} />
+          <div>
+            <p style={{margin:8}}>
+              banner跳转地址:
+            </p>
+            <Input value={previewUrl} onChange={(e)=>{
+               let val = e.target.value,
+                   newfileList = fileList.map((Item)=>{
+                    if(Item.url==previewImage||Item.preview==previewImage){
+                      Item.jumpurl = val
+                    }
+                    return Item
+                   }) 
+               this.setState({
+                previewUrl:val,
+                fileList:newfileList
+               })
+            }}></Input>
+          </div>
+          
         </Modal>
       </div>
     );

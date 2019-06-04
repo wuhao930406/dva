@@ -204,11 +204,7 @@ button,img{
   transition:all 1s;
   animation: yoji linear 0.6s ;
 }
-.banner:hover .says{
-  right:-1200px;
-  bottom:-200px;
-  transition:all 1s;
-}
+
 @keyframes yoji{
   from{
     right:-1200px;
