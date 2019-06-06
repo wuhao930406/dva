@@ -53,6 +53,9 @@ class Uploadpic extends React.Component {
     }
   }
 
+  componentDidMount(){
+    this.props.onRef?this.props.onRef(this):null;
+  }
   render() {
     const { previewVisible, previewImage, fileList,previewUrl } = this.state,
     {num} = this.props;

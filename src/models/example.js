@@ -1,11 +1,12 @@
-import { login } from "../services/example";
+import { login,bannerupdate } from "../services/example";
 import { routerRedux } from 'dva/router'
 
 export default {
   namespace: 'example',
 
   state: {
-    login:""
+    login:"",
+    bannerupdate:""
   },
 
   effects: {
@@ -20,6 +21,14 @@ export default {
     * redirect ({ payload }, { put }) {
       yield put(routerRedux.push(payload.url,payload.params));
       return true
+    },
+    * bannerupdate ({ payload }, {call, put }) {
+      let res = yield call(bannerupdate, payload)
+      yield put({
+        type: 'updateState',
+        payload: { bannerupdate:res }
+      })
+      return res.next
     },
 
   },

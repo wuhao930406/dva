@@ -3,6 +3,11 @@ import PageHead from '../../components/PageHead';
 import { Component } from 'react';
 import { Row, Col, Card, Icon } from 'antd';
 import styles from '../IndexPage.css';
+import { connect } from 'dva';
+
+@connect(({ example }) => ({
+  example
+}))
 class Page extends Component {
   constructor(){
     super()
@@ -19,11 +24,48 @@ class Page extends Component {
     }
   }
 
+  /* dispatch获取 */
+  setNewState(type,value,fn) {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'example/'+type,
+      payload: value
+    }).then((res)=>{
+      if(res){
+        fn?fn(res):null
+      }
+    })
+  }
+
   /*清空*/
   resetFileList = ()=>{
     this.setState({
       fileList:[]
     })
+  }
+  /*提交*/
+  submitBanner = ()=>{
+    let childData = this.child.state.fileList,
+        postData = new FormData(),arr=[]
+      childData.map((item,i)=>{
+        postData.append(`files`,item.originFileObj);
+        arr.push({
+           uid:item.uid,
+           jumpurl:item.jumpurl 
+        })
+      }) 
+      postData.append("data",JSON.stringify(arr))
+
+    this.setNewState("bannerupdate",postData,()=>{
+      console.log(this.props.example.bannerupdate)
+
+    })
+
+
+  }
+
+  onRef = (ref) => {
+    this.child = ref
   }
 
   render() {
@@ -37,9 +79,9 @@ class Page extends Component {
             <Card 
             title = {<span style={{color:"#333"}}><Icon type="picture" /> 修改banner图</span>} 
             extra={<Icon style={{color:"#1bbcff",cursor:"pointer"}} type="eye"/>}
-            actions={[<a onClick={this.resetFileList}><Icon type="redo"/> 清空</a>,<a><Icon type="edit"/> 修改</a>]}
+            actions={[<a onClick={this.resetFileList}><Icon type="redo"/> 清空</a>,<a onClick={this.submitBanner}><Icon type="edit"/> 提交</a>]}
             >
-              <Uploadpic num={3} fileList={fileList}></Uploadpic>
+              <Uploadpic onRef={this.onRef} num={3} fileList={fileList}></Uploadpic>
             </Card>
           </Col>
 

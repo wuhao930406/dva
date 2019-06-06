@@ -44,15 +44,16 @@ function checkStatus(response) {
  * @param  {object} [options] The options we want to pass to "fetch"
  * @return {object}           An object containing either "data" or "err"
  */
-export default function request(url, options,type) {
+export default function request(url, options) {
   let newoption;
-  if(type){
+  if(options.body instanceof FormData) {
     newoption = {...options, headers: {
-      'Content-Type':type,
+      Accept: 'application/json',
       'x-csrf-token':document.cookie.split("=")[1]
     }}
   }else{
     newoption = {...options, headers: {
+      Accept: 'application/json',
       'Content-Type':'application/json; charset=utf-8',
       'x-csrf-token':document.cookie.split("=")[1]
     }}
