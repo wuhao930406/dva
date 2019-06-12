@@ -10,9 +10,23 @@ export async function login(params) {
 }
 
 //banner图
+
+export async function getall(params) {
+  return request(`edu/page/getall`,{
+    method: 'get',
+  })
+}
+
 export async function bannerupdate(params) {
   return request(`edu/page/bannerupdate`,{
     method: 'post',
-    body: params
+    body: JSON.stringify(params)
+  })
+}
+
+export async function bannerdelete(params) {
+  return request(`edu/page/bannerdelete`,{
+    method: 'post',
+    body: JSON.stringify(params)
   })
 }

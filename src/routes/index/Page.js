@@ -4,6 +4,7 @@ import { Component } from 'react';
 import { Row, Col, Card, Icon } from 'antd';
 import styles from '../IndexPage.css';
 import { connect } from 'dva';
+import Item from 'antd/lib/list/Item';
 
 @connect(({ example }) => ({
   example
@@ -12,15 +13,7 @@ class Page extends Component {
   constructor(){
     super()
     this.state = {
-      fileList:[
-        {
-          uid: '-1',
-          name: 'xxx.png',
-          status: 'preload',
-          url: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1559045153887&di=c7668c88f1b2e1e0957ba272cde147da&imgtype=0&src=http%3A%2F%2Fpic1.win4000.com%2Ftj%2F2019-03-04%2F5c7cd3cd7933e.jpg',
-          jumpurl:"baidu.com"
-        },
-      ],
+      fileList:[],
     }
   }
 
@@ -41,31 +34,24 @@ class Page extends Component {
   resetFileList = ()=>{
     this.setState({
       fileList:[]
+    },()=>{
+      this.setNewState("bannerdelete")
     })
-  }
-  /*提交*/
-  submitBanner = ()=>{
-    let childData = this.child.state.fileList,
-        postData = new FormData(),arr=[]
-      childData.map((item,i)=>{
-        postData.append(`files`,item.originFileObj);
-        arr.push({
-           uid:item.uid,
-           jumpurl:item.jumpurl 
-        })
-      }) 
-      postData.append("data",JSON.stringify(arr))
-
-    this.setNewState("bannerupdate",postData,()=>{
-      console.log(this.props.example.bannerupdate)
-
-    })
-
-
   }
 
   onRef = (ref) => {
     this.child = ref
+  }
+
+  componentDidMount(){
+    this.setNewState("getall",null,()=>{
+      this.setState({
+        fileList:this.props.example.getall.map((item)=>{
+          item.url = `http://localhost:8000/edu`+item.url;
+          return item
+        })
+      })
+    })
   }
 
   render() {
@@ -79,9 +65,9 @@ class Page extends Component {
             <Card 
             title = {<span style={{color:"#333"}}><Icon type="picture" /> 修改banner图</span>} 
             extra={<Icon style={{color:"#1bbcff",cursor:"pointer"}} type="eye"/>}
-            actions={[<a onClick={this.resetFileList}><Icon type="redo"/> 清空</a>,<a onClick={this.submitBanner}><Icon type="edit"/> 提交</a>]}
+            actions={[<a onClick={this.resetFileList}><Icon type="redo"/> 清空</a>]}
             >
-              <Uploadpic onRef={this.onRef} num={3} fileList={fileList}></Uploadpic>
+              <Uploadpic action="/edu/page/bannerinsert" delete="bannerdelete" data={1} onRef={this.onRef} num={3} fileList={fileList}></Uploadpic>
             </Card>
           </Col>
 

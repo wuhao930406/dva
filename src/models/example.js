@@ -1,4 +1,4 @@
-import { login,bannerupdate } from "../services/example";
+import { login,bannerupdate,bannerdelete,getall } from "../services/example";
 import { routerRedux } from 'dva/router'
 
 export default {
@@ -6,7 +6,9 @@ export default {
 
   state: {
     login:"",
-    bannerupdate:""
+    bannerupdate:"",
+    bannerdelete:"",
+    getall:""
   },
 
   effects: {
@@ -22,6 +24,15 @@ export default {
       yield put(routerRedux.push(payload.url,payload.params));
       return true
     },
+    * getall ({ payload }, {call, put }) {
+      let res = yield call(getall)
+      yield put({
+        type: 'updateState',
+        payload: { getall:res.data }
+      })
+      return res.next
+    },
+    
     * bannerupdate ({ payload }, {call, put }) {
       let res = yield call(bannerupdate, payload)
       yield put({
@@ -30,6 +41,16 @@ export default {
       })
       return res.next
     },
+    * bannerdelete ({ payload }, {call, put }) {
+      let res = yield call(bannerdelete, payload)
+      yield put({
+        type: 'updateState',
+        payload: { bannerdelete:res }
+      })
+      return res.next
+    },
+
+
 
   },
 

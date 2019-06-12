@@ -65,10 +65,14 @@ export default function request(url, options) {
     .then(data =>{
       message.destroy();
       if(data.code==200){
-        message.success(data.message)
+        if(data.message){
+          message.success(data.message)
+        }
         return { ...data,next:true }
       }else{
-        message.error(data.message)
+        if(data.message){
+          message.error(data.message)
+        }
         return { next:false }
       }
       
