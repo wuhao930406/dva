@@ -192,42 +192,6 @@ button,img{
   position:relative;
   overflow: hidden;
 }
-.says{
-  background-color: transparent;
-  position: absolute;
-  right: -700px;
-  bottom: 0;
-  border-top:200px solid transparent;
-  border-right:200px solid transparent;
-  border-bottom:500px solid rgba(0,0,0,0.4);
-  border-left:200px solid transparent;
-  transition:all 1s;
-  animation: yoji linear 0.6s ;
-}
-
-@keyframes yoji{
-  from{
-    right:-1200px;
-    bottom:-200px;
-  }to{
-    right:-700px;
-    bottom:0px;
-  }
-}
-.says p{
-  overflow: hidden;
-}
-.says p:first-child{
-  width: 190px;
-  position: absolute;
-  left: -100px;
-  top: 558px;
-  color: #ffffff;
-  text-align: left;
-  border: rgba(255,255,255,0.2) dashed 1px;
-  padding: 10px;
-  text-indent: 28px;
-}
 .model1 :global .ant-card-body{
   padding: 10px !important;
 }

@@ -1,7 +1,7 @@
 import Uploadpic from '../../components/Uploadpic';
 import PageHead from '../../components/PageHead';
 import { Component } from 'react';
-import { Row, Col, Card, Icon } from 'antd';
+import { Row, Col, Card, Icon, message } from 'antd';
 import styles from '../IndexPage.css';
 import { connect } from 'dva';
 import Item from 'antd/lib/list/Item';
@@ -32,6 +32,12 @@ class Page extends Component {
 
   /*清空*/
   resetFileList = ()=>{
+    message.destroy();
+    if(this.child.state.fileList.length==0){
+      message.warn("没有需要清除的banner")
+      return
+    }
+
     this.setState({
       fileList:[]
     },()=>{
