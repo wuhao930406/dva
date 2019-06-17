@@ -1,5 +1,6 @@
 import FreeScrollBar from 'react-free-scrollbar';
 import React, { Component } from 'react';
+import { withRouter } from 'dva/router';
 
 class ScrollBar extends Component{
   constructor(props){
@@ -7,17 +8,20 @@ class ScrollBar extends Component{
     this.controlledScrollBar = null
   }
 
-  shouldComponentUpdate(nextProps){
-    if(this.props.children!=nextProps.children){
+
+
+  componentDidUpdate(nextProps) {
+    if(nextProps.location !== this.props.location){
       if(this.controlledScrollBar){
         setTimeout(()=>{
           this.controlledScrollBar.setPosition({top: 1})
         },100)
       }
-      
     }
-    return true
   }
+
+
+
 
   render(){
     let {children} = this.props;
@@ -31,4 +35,4 @@ class ScrollBar extends Component{
 
 
   
-export default ScrollBar;
+export default withRouter(ScrollBar);
