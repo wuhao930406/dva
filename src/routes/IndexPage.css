@@ -216,8 +216,26 @@ button,img{
 :global .ant-upload-list-picture-card{
   float: none !important
 }
-
-
+.setcard ul{
+  background-color: transparent !important;
+}
+.setcard p,.setcard a{
+  color: #ffffff !important;
+}
+.setcard input,.setcard textarea{
+  background-color: transparent !important;
+  color: #ffffff;
+}
+.Icons{
+  width:300px;
+  height: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: #999 dashed 1px;
+  font-size: 20px;
+  cursor: pointer;
+}
 
 
 
