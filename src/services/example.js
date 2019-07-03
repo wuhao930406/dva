@@ -30,3 +30,45 @@ export async function bannerdelete(params) {
     body: JSON.stringify(params)
   })
 }
+
+//index_adv 
+export async function getadv(params) {
+  return request(`edu/page/getadv`,{
+    method: 'get',
+  })
+}
+
+export async function updateadv(params) {
+  return request(`edu/page/updateadv`,{
+    method: 'post',
+    body: JSON.stringify(params)
+  })
+}
+
+//aboutus
+export async function getaboutus(params) {
+  return request(`edu/page/getaboutus`,{
+    method: 'get',
+  })
+}
+
+export async function updateaboutus(params) {
+  return request(`edu/page/updateaboutus`,{
+    method: 'post',
+    body: JSON.stringify(params)
+  })
+}
+
+//service
+export async function getservice(params) {
+  return request(`edu/page/getservice`,{
+    method: 'get',
+  })
+}
+
+export async function updateservice(params) {
+  return request(`edu/page/updateservice`,{
+    method: 'post',
+    body: JSON.stringify(params)
+  })
+}
