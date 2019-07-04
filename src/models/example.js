@@ -1,6 +1,7 @@
 import {
   login, bannerupdate, bannerdelete, getall,
-  getadv, updateadv, getaboutus, updateaboutus, getservice, updateservice
+  getadv, updateadv, getaboutus, updateaboutus, getservice, updateservice,
+  getenv, envupdate, envdelete
 
 } from "../services/example";
 import { routerRedux } from 'dva/router'
@@ -15,9 +16,36 @@ export default {
     getaboutus: [],
     code: "",
     getservice: [],
+    getenv: [],
   },
 
   effects: {
+    * getenv({ payload }, { call, put }) {
+      let res = yield call(getenv)
+      yield put({
+        type: 'updateState',
+        payload: { getenv: res.data }
+      })
+      return res.next
+    },
+    * envupdate({ payload }, { call, put }) {
+      let res = yield call(envupdate, payload)
+      yield put({
+        type: 'updateState',
+        payload: { code: res }
+      })
+      return res.next
+    },
+    * envdelete({ payload }, { call, put }) {
+      let res = yield call(envdelete, payload)
+      yield put({
+        type: 'updateState',
+        payload: { code: res }
+      })
+      return res.next
+    },
+
+
     * getservice({ payload }, { call, put }) {
       let res = yield call(getservice)
       yield put({
@@ -90,6 +118,7 @@ export default {
       })
       return res.next
     },
+
 
     * bannerupdate({ payload }, { call, put }) {
       let res = yield call(bannerupdate, payload)

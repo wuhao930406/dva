@@ -2,8 +2,8 @@ import { Row,Col,Card,Icon,PageHeader  } from 'antd';
 import { Link } from 'dva/router';
 import styles from '../IndexPage.css';
 const HomePage = ({children}) => {
-  const models = [{name:'模块1',icon:"edit",path:"/main/page"}, 
-  {name:'模块2',icon:"form",path:"/page"}, 
+  const models = [{name:'首页',icon:"edit",path:"/main/page"}, 
+  {name:'关于我们',icon:"form",path:"/main/aboutus"}, 
   {name:'模块3',icon:"copy",path:"/page"}, 
   {name:'模块4',icon:"scissor",path:"/page"}, 
   {name:'模块5',icon:"delete",path:"/page"}, 

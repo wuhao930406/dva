@@ -30,6 +30,29 @@ export async function bannerdelete(params) {
     body: JSON.stringify(params)
   })
 }
+//aboutus work_env
+
+export async function getenv(params) {
+  return request(`edu/about/getenv`,{
+    method: 'get',
+  })
+}
+
+export async function envupdate(params) {
+  return request(`edu/about/envupdate`,{
+    method: 'post',
+    body: JSON.stringify(params)
+  })
+}
+
+export async function envdelete(params) {
+  return request(`edu/about/envdelete`,{
+    method: 'post',
+    body: JSON.stringify(params)
+  })
+}
+
+
 
 //index_adv 
 export async function getadv(params) {

@@ -1,7 +1,6 @@
 import { Upload, Icon, Modal,Input,message } from 'antd';
 import React from 'react'
 import styles from './style.css';
-import Item from 'antd/lib/list/Item';
 import { connect } from 'dva';
 
 
@@ -48,8 +47,8 @@ class Uploadpic extends React.Component {
   handleOk = () => {
     this.setState({ confirmLoading: true });
     let { postData } = this.state;
-    this.setNewState("bannerupdate",postData,()=>{
-      this.setState({ confirmLoading: false });
+    this.setNewState(this.props.update,postData,()=>{
+      this.setState({ confirmLoading: false,previewVisible:false });
     });
   }
 
@@ -58,9 +57,10 @@ class Uploadpic extends React.Component {
     if (!file.url && !file.preview) {
       file.preview = await getBase64(file.originFileObj);
     }
+    let extrakey = this.props.extrakey;
     this.setState({
       previewImage: file.url || file.preview,
-      previewUrl: file.jumpurl,
+      previewUrl: file[extrakey],
       previewVisible: true,
     });
   };
@@ -123,7 +123,7 @@ class Uploadpic extends React.Component {
 
   render() {
     const { previewVisible, previewImage, fileList,previewUrl,confirmLoading } = this.state,
-    {num,action} = this.props;
+    {num,action,extratext,extrakey} = this.props;
     const uploadButton = (
       <div>
         <div className={styles.upload} >
@@ -148,31 +148,30 @@ class Uploadpic extends React.Component {
           visible={previewVisible} 
           onCancel={this.handleCancel}
           onOk={this.handleOk}
-          okText="添加跳转地址"
+          okText="提交"
           cancelText="取消"
           confirmLoading={confirmLoading}
         >
           <img alt="example" style={{ width: '100%' }} src={previewImage} />
           <div>
-            <p style={{margin:8}}>
-              banner跳转地址:
+            <p style={{margin:"18px 0px 16px 0px"}}>
+              {extratext}:
             </p>
             <Input value={previewUrl} onChange={(e)=>{
                 let val = e.target.value,curuid,
                     newfileList = fileList.map((Item)=>{
                     if(Item.url==previewImage || Item.preview==previewImage){
-                      Item.jumpurl = val
+                      Item[extrakey] = val
                       curuid = Item.uid;
                     }
                     return Item
-                  }) 
+                  })
+               let postData = {uid:curuid};
+               postData[extrakey] = val   
                this.setState({
                   previewUrl:val,
                   fileList:newfileList,
-                  postData:{
-                    jumpurl:val,
-                    uid:curuid
-                  }
+                  postData
                })
             }}></Input>
           </div>

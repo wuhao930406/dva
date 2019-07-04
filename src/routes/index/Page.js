@@ -177,7 +177,15 @@ class Page extends Component {
               extra={<Icon style={{ color: "#1bbcff", cursor: "pointer" }} type="eye" />}
               actions={[<a onClick={this.resetFileList}><Icon type="redo" /> 清空</a>]}
             >
-              <Uploadpic action="/edu/page/bannerinsert" delete="bannerdelete" data={1} onRef={this.onRef} num={3} fileList={fileList}></Uploadpic>
+              <Uploadpic 
+              action="/edu/page/bannerinsert" 
+              delete="bannerdelete"
+              update="bannerupdate" 
+              extrakey="jumpurl"
+              extratext="banner跳转地址"
+              onRef={this.onRef} 
+              num={6} 
+              fileList={fileList}></Uploadpic>
             </Card>
           </Col>
           <Col style={{ marginTop: 18 }}>
