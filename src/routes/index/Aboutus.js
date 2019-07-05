@@ -15,24 +15,13 @@ class Aboutus extends Component {
     super()
     this.state = {
       fileList: [],
-      advList: [{
-        title: "",
-        desc: ""
-      }, {
-        title: "",
-        desc: ""
-      }, {
-        title: "",
-        desc: ""
-      }
-      ],
       getaboutus: {
         companydesc: "",
         ourdream: "",
         plant: "",
         workenv: ""
       },
-      service: [
+      develop: [
 
       ]
     }
@@ -118,12 +107,12 @@ class Aboutus extends Component {
   }
 
   render() {
-    const { fileList, advList, getaboutus, service } = this.state,
+    const { fileList, develop, getaboutus } = this.state,
       { getadv } = this.props.example,
       { load1 } = this.props;
 
     return (
-      <div className={styles.model1} style={{paddingBottom:18}}>
+      <div className={styles.model1} style={{ paddingBottom: 18 }}>
         <PageHead title="关于我们" subTitle="修改官网上关于我们的内容"></PageHead>
         <Tabs defaultActiveKey="1">
           <TabPane tab="企业介绍" key="1">
@@ -188,7 +177,66 @@ class Aboutus extends Component {
             </Card>
           </TabPane>
           <TabPane tab="发展历程" key="2">
-            Content of Tab Pane 2
+            <Card
+              title={<span style={{ color: "#333" }}><Icon type="picture" /> 修改企业发展历程</span>}
+              extra={<Icon style={{ color: "#1bbcff", cursor: "pointer" }} type="eye" />}
+            >
+              <Row gutter={24}>
+                {
+                  develop.map((item, i) => {
+                    return (
+                      <Col xs={24} sm={24} md={12} lg={8} xl={8} xxl={8} style={{ marginBottom: 18 }}>
+                        <Card hoverable title={item.title ? item.title : "发展历程"} extra={
+                          <Popconfirm title="是否删除该历程?" okText="删除" cancelText="取消" onConfirm={()=>{
+                            develop.splice(i, 1);
+                            this.setState({ develop })
+                          }}>
+                            <a><Icon type="minus-circle" /> &nbsp;删除</a>
+                          </Popconfirm>
+                        }>
+                          <Input placeholder='请输入发展历程' value={item.title} onChange={(e) => {
+                            develop[i].title = e.target.value;
+                            this.setState({
+                              develop
+                            })
+                          }}></Input>
+                          <Input.TextArea
+                            rows={6}
+                            placeholder='请输入服务描述（最多80个字）'
+                            style={{ marginTop: 16 }}
+                            maxLength={80}
+                            value={item.desc}
+                            onChange={(e) => {
+                              develop[i].desc = e.target.value;
+                              this.setState({
+                                develop
+                              })
+                            }}
+                          />
+                        </Card>
+                      </Col>
+                    )
+                  })
+                }
+
+                <Col xs={24} sm={24} md={12} lg={8} xl={8} xxl={8} style={{ marginBottom: 18 }}>
+                  <div className={styles.Icons} onClick={() => {
+                    develop.push({
+                      title: undefined,
+                      desc: undefined
+                    });
+                    this.setState({ develop })
+                  }}>
+                    <Icon type="plus" />
+                  </div>
+                </Col>
+
+              </Row>
+
+
+            </Card>
+
+
           </TabPane>
           <TabPane tab="企业成绩" key="3">
             Content of Tab Pane 3

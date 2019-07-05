@@ -273,12 +273,11 @@ class Page extends Component {
                   service.map((item, i) => {
                     return (<Col xs={24} sm={24} md={12} lg={8} xl={8} xxl={8} style={{ marginBottom: 18 }}>
                       <Card hoverable title={item.title ? item.title : "服务标题"} extra={
-                        <Popconfirm >
-                          <a onClick={() => {
-                            service.splice(i, 1);
-                            this.setState({ service })
-
-                          }}><Icon type="minus-circle" /> &nbsp;删除</a>
+                        <Popconfirm title="是否删除该服务?" okText="删除" cancelText="取消" onConfirm={() => {
+                          service.splice(i, 1);
+                          this.setState({ service })
+                        }}>
+                          <a><Icon type="minus-circle" /> &nbsp;删除</a>
                         </Popconfirm>
                       }>
                         <Input placeholder='请输入服务标题' value={item.title} onChange={(e) => {
