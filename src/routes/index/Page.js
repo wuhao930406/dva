@@ -271,7 +271,7 @@ class Page extends Component {
               <Row gutter={24} style={{ paddingTop: 18 }}>
                 {
                   service.map((item, i) => {
-                    return (<Col xs={24} sm={24} md={12} lg={8} xl={8} xxl={8} style={{ marginBottom: 18 }}>
+                    return (<Col  key={i} xs={24} sm={24} md={12} lg={8} xl={8} xxl={8} style={{ marginBottom: 18 }}>
                       <Card hoverable title={item.title ? item.title : "服务标题"} extra={
                         <Popconfirm title="是否删除该服务?" okText="删除" cancelText="取消" onConfirm={() => {
                           service.splice(i, 1);

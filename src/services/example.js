@@ -30,6 +30,70 @@ export async function bannerdelete(params) {
     body: JSON.stringify(params)
   })
 }
+
+//index_adv 
+export async function getadv(params) {
+  return request(`edu/page/getadv`,{
+    method: 'get',
+  })
+}
+
+export async function updateadv(params) {
+  return request(`edu/page/updateadv`,{
+    method: 'post',
+    body: JSON.stringify(params)
+  })
+}
+
+//aboutus
+export async function getaboutus(params) {
+  return request(`edu/page/getaboutus`,{
+    method: 'get',
+  })
+}
+
+
+
+export async function updateaboutus(params) {
+  return request(`edu/page/updateaboutus`,{
+    method: 'post',
+    body: JSON.stringify(params)
+  })
+}
+
+//service
+export async function getservice(params) {
+  return request(`edu/page/getservice`,{
+    method: 'get',
+  })
+}
+
+export async function updateservice(params) {
+  return request(`edu/page/updateservice`,{
+    method: 'post',
+    body: JSON.stringify(params)
+  })
+}
+
+//aboutus
+export async function getdevlop(params) {
+  return request(`edu/about/getdevlop`,{
+    method: 'get',
+  })
+}
+export async function updatedevlop(params) {
+  return request(`edu/about/updatedevlop`,{
+    method: 'post',
+    body: JSON.stringify(params)
+  })
+}
+
+export async function insertdevlop(params) {
+  return request(`edu/about/insertdevlop`,{
+    method: 'post',
+    body: params
+  })
+}
 //aboutus work_env
 
 export async function getenv(params) {
@@ -53,44 +117,14 @@ export async function envdelete(params) {
 }
 
 
-
-//index_adv 
-export async function getadv(params) {
-  return request(`edu/page/getadv`,{
+export async function getachieve(params) {
+  return request(`edu/about/getachieve`,{
     method: 'get',
   })
 }
 
-export async function updateadv(params) {
-  return request(`edu/page/updateadv`,{
-    method: 'post',
-    body: JSON.stringify(params)
-  })
-}
-
-//aboutus
-export async function getaboutus(params) {
-  return request(`edu/page/getaboutus`,{
-    method: 'get',
-  })
-}
-
-export async function updateaboutus(params) {
-  return request(`edu/page/updateaboutus`,{
-    method: 'post',
-    body: JSON.stringify(params)
-  })
-}
-
-//service
-export async function getservice(params) {
-  return request(`edu/page/getservice`,{
-    method: 'get',
-  })
-}
-
-export async function updateservice(params) {
-  return request(`edu/page/updateservice`,{
+export async function updateachieve(params) {
+  return request(`edu/about/updateachieve`,{
     method: 'post',
     body: JSON.stringify(params)
   })
