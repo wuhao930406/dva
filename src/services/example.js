@@ -136,3 +136,16 @@ export async function updateachieve(params) {
     body: JSON.stringify(params)
   })
 }
+
+export async function getcourse(params) {
+  return request(`edu/service/getcourse`,{
+    method: 'get',
+  })
+}
+
+export async function updatecourse(params) {
+  return request(`edu/service/updatecourse`,{
+    method: 'post',
+    body: JSON.stringify(params)
+  })
+}

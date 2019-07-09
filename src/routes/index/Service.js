@@ -1,7 +1,7 @@
 import Uploadpic from '../../components/Uploadpic';
 import PageHead from '../../components/PageHead';
 import { Component } from 'react';
-import { Row, Col, Card, Icon, message, Input, InputNumber, Popconfirm, Skeleton, Tabs, DatePicker, Upload, Modal,Button } from 'antd';
+import { Row, Col, Card, Icon, message, Input, InputNumber, Popconfirm, Skeleton, Tabs, DatePicker, Upload, Modal, Button } from 'antd';
 import styles from '../IndexPage.css';
 import { connect } from 'dva';
 import locale from 'antd/lib/date-picker/locale/zh_CN';
@@ -33,8 +33,15 @@ class Service extends Component {
       loading: false,
       course: {
         coursedesc: "",
-        cmodule: [],
-        cpro:[]
+        cmodule: [{
+          title: "",
+          url: "",
+          pdfurl: ""
+        }],
+        cpro: [{
+          title: "",
+          desc: ""
+        }]
       }
     }
   }
@@ -53,25 +60,29 @@ class Service extends Component {
   }
 
   /*图片上传 */
-  handleChange(info, i,type) {
-
+  handleChange(info, i, type) {
     const isJPG = info.file.type.indexOf(type) != -1;
     if (!isJPG) {
-      message.error(`只能上传${type=="image"?"图片":"pdf"}格式!`);
+      message.error(`只能上传${type == "image" ? "图片" : "pdf"}格式!`);
       return
     }
-
-    this.setState({ loading: true });
+    if (type == "image") {
+      this.setState({ loading: true });
+    }
     let formData = new FormData();
+
     formData.append("file", info.file);
     formData.append("type", type);
-
 
     this.setNewState("insertcourse", formData, () => {
       let res = this.props.example.insertcourse;
       let imageUrl = '/edu' + res.data.url;
       let course = this.state.course;
-      course.cmodule[i].url = imageUrl;
+      if (type == "image") {
+        course.cmodule[i].url = imageUrl;
+      } else {
+        course.cmodule[i].pdfurl = imageUrl;
+      }
       this.setState({
         course,
         loading: false,
@@ -83,21 +94,52 @@ class Service extends Component {
 
   /*清空*/
   resetFileList = () => {
-    message.destroy();
-    if (this.child.state.fileList.length == 0) {
-      message.warn("没有需要清除的办公图片")
-      return
-    }
     this.setState({
-      fileList: [],
       course: {
         coursedesc: "",
-        cmodule: []
-      },
+        cmodule: [{
+          title: "",
+          url: "",
+          pdfurl: ""
+        }],
+        cpro: [{
+          title: "",
+          desc: ""
+        }]
+      }
     }, () => {
-      message.success("重置企业介绍成功，提交之前保留原来的数据");
-      this.setNewState("envdelete")
+      message.success("重置国际课程整体配套成功，提交之前保留原来的数据");
     })
+  }
+
+  submitCourse = () => {
+    let course = this.state.course;
+    if (!course.coursedesc) {
+      message.warn("请输入课程简介");
+      return
+    }
+
+    if (course.cmodule.length == 0) {
+      message.warn("请完善课程模块");
+      return
+    }
+    let arrs = course.cmodule.filter((item) => { return !item.title || !item.url || !item.pdfurl })
+    if (course.cpro.length == 0) {
+      message.warn("请完善产品介绍");
+      return
+    }
+    let arrc = course.cpro.filter((item) => { return !item.title || !item.desc })
+
+    if (arrs.length > 0) {
+      message.warn("请完善课程模块");
+      return
+    }
+    if (arrc.length > 0) {
+      message.warn("请完善产品介绍");
+      return
+    }
+    this.setNewState("updatecourse",course)
+
   }
 
   onRef = (ref) => {
@@ -105,7 +147,11 @@ class Service extends Component {
   }
 
   componentDidMount() {
-
+    this.setNewState("getcourse",null,()=>{
+      this.setState({
+        course:this.props.example.getcourse
+      })
+    })
   }
 
 
@@ -116,6 +162,7 @@ class Service extends Component {
     const { course } = this.state,
       { load1 } = this.props;
     let cmodule = course.cmodule;
+    let cpro = course.cpro;
 
     const uploadButton = (
       <div style={{ width: 104 }}>
@@ -136,7 +183,8 @@ class Service extends Component {
             <Card
               title={<span style={{ color: "#333" }}><Icon type="picture" /> 修改企业介绍</span>}
               extra={<Icon style={{ color: "#1bbcff", cursor: "pointer" }} type="eye" />}
-              actions={[<a onClick={this.resetFileList}><Icon type="redo" /> 清空</a>, <a onClick={this.submitAbout}><Icon type="upload" /> 提交</a>]}
+              actions={[<a onClick={this.resetFileList}><Icon type="redo" /> 清空</a>,
+              <a onClick={this.submitCourse}><Icon type="upload" /> 提交</a>]}
             >
               <Skeleton active loading={load1}>
                 <Row gutter={24} className={styles.intro}>
@@ -154,75 +202,123 @@ class Service extends Component {
                         })
                       }} />
                   </Col>
-                  <p style={{ textIndent: 12 }}>课程模块:</p>
-                  {
-                    cmodule.map((item, i) => {
-                      return (
-                        <Col key={i} xs={24} sm={24} md={12} lg={8} xl={8} xxl={8} style={{ marginBottom: 18 }}>
-                          <Card hoverable title={item.title ? item.title : "课程模块"} extra={
-                            <Popconfirm title="是否删除该课程模块?" okText="删除" cancelText="取消" onConfirm={() => {
-                              cmodule.splice(i, 1);
-                              this.setState({ cmodule })
-                            }}>
-                              <a><Icon type="minus-circle" /> &nbsp;删除</a>
-                            </Popconfirm>
-                          }>
-                            <Input placeholder='请输入课程模块标题' value={item.title} onChange={(e) => {
-                              cmodule[i].title = e.target.value;
-                              this.setState({
-                                cmodule
-                              })
-                            }}></Input>
-                            <Row>
-                              <Col span={12}>
-                                <p>添加图片：</p>
-                                <div style={{ width: "100%" }}>
+                  <Col span={24} style={{ padding: 0 }}>
+                    <p style={{ textIndent: 12 }}>课程模块:</p>
+                    {
+                      cmodule.map((item, i) => {
+                        return (
+                          <Col key={i} xs={24} sm={24} md={12} lg={8} xl={8} xxl={6} style={{ marginBottom: 18 }}>
+                            <Card hoverable title={item.title ? item.title : "课程模块"} extra={
+                              <Popconfirm title="是否删除该课程模块?" okText="删除" cancelText="取消" onConfirm={() => {
+                                cmodule.splice(i, 1);
+                                this.setState({ cmodule })
+                              }}>
+                                <a><Icon type="minus-circle" /> &nbsp;删除</a>
+                              </Popconfirm>
+                            }>
+                              <Input placeholder='请输入课程模块标题' value={item.title} onChange={(e) => {
+                                cmodule[i].title = e.target.value;
+                                this.setState({
+                                  cmodule
+                                })
+                              }}></Input>
+                              <Row>
+                                <Col span={12}>
+                                  <p>添加图片：</p>
+                                  <div style={{ width: "100%" }}>
+                                    <Upload
+                                      style={{ width: 118 }}
+                                      listType="picture-card"
+                                      showUploadList={false}
+                                      action={""}
+                                      beforeUpload={(file) => beforeUpload(file)}
+                                      onChange={(info) => this.handleChange(info, i, "image")}
+                                    >
+                                      {cmodule[i].url ? <img style={{ width: 118, height: 86 }} src={cmodule[i].url} alt="avatar" /> : uploadButton}
+                                    </Upload>
+                                  </div>
+
+                                </Col>
+                                <Col span={12}>
+                                  <p>添加pdf：</p>
                                   <Upload
-                                    style={{ width: 118 }}
-                                    listType="picture-card"
                                     showUploadList={false}
                                     action={""}
-                                    beforeUpload={(file)=>beforeUpload(file,"pdf")}
-                                    onChange={(info) => this.handleChange(info, i,"image")}
+                                    beforeUpload={(file) => beforeUpload(file)}
+                                    onChange={(info) => this.handleChange(info, i, "pdf")}
                                   >
-                                    {cmodule[i].url ? <img style={{ width: 118, height: 86 }} src={cmodule[i].url} alt="avatar" /> : uploadButton}
-                                  </Upload>
-                                </div>
-
-                              </Col>
-                              <Col span={12}>
-                                <p>添加pdf：</p>
-                                <Upload
-                                  showUploadList={false}
-                                  action={""}
-                                  beforeUpload={(file)=>beforeUpload(file,"pdf")}
-                                  onChange={(info) => this.handleChange(info, i, "pdf")}
-                                >
-                                  <Button>
-                                    <Icon type="upload" /> Upload
+                                    <Button>
+                                      <Icon type="upload" /> 上传(只能上传1份)
                                   </Button>
-                                </Upload>
-                              </Col>
-                            </Row>
+                                  </Upload>
+                                </Col>
+                              </Row>
 
-                          </Card>
-                        </Col>
-                      )
-                    })
-                  }
-
-                  <Col xs={24} sm={24} md={12} lg={8} xl={8} xxl={8} style={{ marginBottom: 18 }}>
-                    <div className={styles.Icons} style={{ height: 272 }} onClick={() => {
-                      cmodule.push({
-                        title: undefined,
-                        desc: undefined
-                      });
-                      this.setState({ cmodule })
-                    }}>
-                      <Icon type="plus" />
-                    </div>
+                            </Card>
+                          </Col>
+                        )
+                      })
+                    }
+                    {
+                      cmodule.length < 4 && <Col xs={24} sm={24} md={12} lg={8} xl={8} xxl={6} style={{ marginBottom: 18 }}>
+                        <div className={styles.Icons} style={{ height: 272 }} onClick={() => {
+                          cmodule.push({
+                            title: undefined,
+                            url: undefined,
+                            pdfurl: undefined
+                          });
+                          this.setState({ cmodule })
+                        }}>
+                          <Icon type="plus" />
+                        </div>
+                      </Col>
+                    }
                   </Col>
 
+                  <Col span={24} style={{ padding: 0 }}>
+                    <p style={{ textIndent: 12 }}>产品介绍:</p>
+                    {
+                      cpro.map((item, i) => {
+                        return (
+                          <Col key={i} xs={24} sm={24} md={12} lg={8} xl={8} xxl={6} style={{ marginBottom: 18 }}>
+                            <Card hoverable title={item.title ? item.title : "产品介绍"} extra={
+                              <Popconfirm title="是否删除该产品介绍?" okText="删除" cancelText="取消" onConfirm={() => {
+                                cpro.splice(i, 1);
+                                this.setState({ cpro })
+                              }}>
+                                <a><Icon type="minus-circle" /> &nbsp;删除</a>
+                              </Popconfirm>
+                            }>
+                              <Input placeholder='请输入产品介绍标题' value={item.title} onChange={(e) => {
+                                cpro[i].title = e.target.value;
+                                this.setState({
+                                  cpro
+                                })
+                              }}></Input>
+                              <Input.TextArea placeholder='请输入产品介绍的内容(最多400字)' maxLength={400} value={item.desc} onChange={(e) => {
+                                cpro[i].desc = e.target.value;
+                                this.setState({
+                                  cpro
+                                })
+                              }} />
+                            </Card>
+                          </Col>
+                        )
+                      })
+                    }
+                    <Col xs={24} sm={24} md={12} lg={8} xl={8} xxl={6} style={{ marginBottom: 18 }}>
+                      <div className={styles.Icons} style={{ height: 210 }} onClick={() => {
+                        cpro.push({
+                          title: undefined,
+                          desc: undefined,
+                        });
+                        this.setState({ cpro })
+                      }}>
+                        <Icon type="plus" />
+                      </div>
+                    </Col>
+
+                  </Col>
 
 
                 </Row>

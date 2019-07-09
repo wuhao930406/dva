@@ -115,7 +115,6 @@ class Aboutus extends Component {
       },
     }, () => {
       message.success("重置企业介绍成功，提交之前保留原来的数据");
-      this.setNewState("envdelete")
     })
   }
 
@@ -189,9 +188,7 @@ class Aboutus extends Component {
       return
     }
 
-    this.setNewState("updateaboutus", this.state.getaboutus, () => {
-      message.success("修改成功！")
-    })
+    this.setNewState("updateaboutus", this.state.getaboutus)
   }
 
   resetDevelop = () => {

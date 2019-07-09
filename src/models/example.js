@@ -1,7 +1,7 @@
 import {
   login, bannerupdate, bannerdelete, getall,
   getadv, updateadv, getaboutus, updateaboutus, getservice, updateservice,
-  getenv, envupdate, envdelete, insertdevlop, updatedevlop, getdevlop, getachieve, updateachieve, insertcourse
+  getenv, envupdate, envdelete, insertdevlop, updatedevlop, getdevlop, getachieve, updateachieve, insertcourse, updatecourse, getcourse
 
 } from "../services/example";
 import { routerRedux } from 'dva/router'
@@ -23,9 +23,19 @@ export default {
     getdevlop: [],
     getachieve: [],
     updateachieve: [],
+    updatecourse: [],
+    getcourse: {}
   },
 
   effects: {
+    * getcourse({ payload }, { call, put }) {
+      let res = yield call(getcourse)
+      yield put({
+        type: 'updateState',
+        payload: { getcourse: res.data }
+      })
+      return res.next
+    },
     * getachieve({ payload }, { call, put }) {
       let res = yield call(getachieve)
       yield put({
@@ -86,6 +96,14 @@ export default {
     },
     * updateachieve({ payload }, { call, put }) {
       let res = yield call(updateachieve, payload)
+      yield put({
+        type: 'updateState',
+        payload: { code: res }
+      })
+      return res.next
+    },
+    * updatecourse({ payload }, { call, put }) {
+      let res = yield call(updatecourse, payload)
       yield put({
         type: 'updateState',
         payload: { code: res }
