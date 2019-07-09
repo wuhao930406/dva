@@ -53,7 +53,6 @@ export async function getaboutus(params) {
 }
 
 
-
 export async function updateaboutus(params) {
   return request(`edu/page/updateaboutus`,{
     method: 'post',
@@ -94,6 +93,14 @@ export async function insertdevlop(params) {
     body: params
   })
 }
+
+export async function insertcourse(params) {
+  return request(`edu/service/insertcourse`,{
+    method: 'post',
+    body: params
+  })
+}
+
 //aboutus work_env
 
 export async function getenv(params) {

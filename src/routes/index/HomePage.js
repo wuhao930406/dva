@@ -4,7 +4,7 @@ import styles from '../IndexPage.css';
 const HomePage = ({children}) => {
   const models = [{name:'首页',icon:"edit",path:"/main/page"}, 
   {name:'关于我们',icon:"form",path:"/main/aboutus"}, 
-  {name:'模块3',icon:"copy",path:"/page"}, 
+  {name:'项目与服务',icon:"copy",path:"/main/service"}, 
   {name:'模块4',icon:"scissor",path:"/page"}, 
   {name:'模块5',icon:"delete",path:"/page"}, 
   {name:'模块6',icon:"snippets",path:"/page"}];

@@ -139,34 +139,34 @@ class Aboutus extends Component {
         }) : ""
     });
     this.setNewState("getdevlop", null, () => {
-      this.props.example.getdevlop.length>0?
-      this.setState({
-        develop: this.props.example.getdevlop
-      }):null
+      this.props.example.getdevlop.length > 0 ?
+        this.setState({
+          develop: this.props.example.getdevlop
+        }) : null
     });
-      this.setNewState("getachieve", null, () => {
-        let reshieve = JSON.parse(JSON.stringify(this.props.example.getachieve));;
-        if(reshieve.length>0){
-          let resdata = reshieve.map((item)=>{
-             let more = item.mores.split("^");
-             more = more.map((t,n)=>{
-              return {
-                num:t.split("|")[0],
-                leaf:t.split("|")[1],
-                content:t.split("|")[2],
-              }
-             })
-             item.mores = more
-             return item
+    this.setNewState("getachieve", null, () => {
+      let reshieve = JSON.parse(JSON.stringify(this.props.example.getachieve));
+      if (reshieve.length > 0) {
+        let resdata = reshieve.map((item) => {
+          let more = item.mores.split("^");
+          more = more.map((t, n) => {
+            return {
+              num: t.split("|")[0],
+              leaf: t.split("|")[1],
+              content: t.split("|")[2],
+            }
           })
-          console.log(resdata)
+          item.mores = more
+          return item
+        })
+        console.log(resdata)
 
-          this.setState({
-            achieve: resdata
-          })
+        this.setState({
+          achieve: resdata
+        })
 
-        }
-     
+      }
+
     });
 
   }
@@ -258,8 +258,8 @@ class Aboutus extends Component {
 
   submitAchieve = () => {
     let achieve = JSON.parse(JSON.stringify(this.state.achieve));
-    let key = 0,str="";
-    if(!achieve[0].totaldesc){
+    let key = 0, str = "";
+    if (!achieve[0].totaldesc) {
       message.warn("请输入企业成绩概述");
       return
     }
@@ -270,7 +270,7 @@ class Aboutus extends Component {
 
       let more = item.mores.map((t, n) => {
         if (!t.num || !t.leaf || !t.content) {
-          str += item.title+",";
+          str += item.title + ",";
           key = 1
         }
         let oneline = t.num + "|" + t.leaf + "|" + t.content
@@ -280,15 +280,15 @@ class Aboutus extends Component {
       item.mores = mores;
       return item
     })
-    if(key==1){
-      if(str==""){
+    if (key == 1) {
+      if (str == "") {
         message.warn("请输入标题")
-      }else{
+      } else {
         message.warn(`请完善${str}下的信息`)
       }
       return
     }
-    this.setNewState("updateachieve",postArr)
+    this.setNewState("updateachieve", postArr)
 
 
   }
@@ -440,7 +440,7 @@ class Aboutus extends Component {
                     )
                   })
                 }
-                
+
                 <Col xs={24} sm={24} md={12} lg={8} xl={8} xxl={8} style={{ marginBottom: 18 }}>
                   <div className={styles.Icons} style={{ height: 490 }} onClick={() => {
                     develop.push({
@@ -527,7 +527,7 @@ class Aboutus extends Component {
                                     }}>删除</a>}>
 
                                       <Input.Group compact style={{ display: "flex" }}>
-                                        <InputNumber min={1} style={{ flex: 0.4 }}
+                                        <InputNumber min={1} style={{ flex: 1 }}
                                           value={this.state.achieve[i].mores[n].num}
                                           onChange={(val) => {
                                             let achieve = this.state.achieve;
@@ -538,7 +538,7 @@ class Aboutus extends Component {
                                           }}
                                           placeholder="请输入数字"
                                         ></InputNumber>
-                                        <Input style={{ flex: 1 }}
+                                        <Input style={{ flex: 1, maxWidth: 80 }}
                                           value={this.state.achieve[i].mores[n].leaf}
                                           placeholder="请输入单位"
                                           onChange={(e) => {
@@ -550,7 +550,8 @@ class Aboutus extends Component {
                                           }}></Input>
                                       </Input.Group>
                                       <Input style={{ marginTop: 18 }}
-                                        placeholder="请输入内容"
+                                        placeholder="请输入内容(最多16个字)"
+                                        maxLength={16}
                                         value={this.state.achieve[i].mores[n].content}
                                         onChange={(e) => {
                                           let achieve = this.state.achieve;
@@ -567,27 +568,24 @@ class Aboutus extends Component {
 
                               })
                             }
-                            
-                            <Col xxl={12} xl={12} lg={24}
-                              style={{ height: 160, marginBottom: 12 }} onClick={() => {
-                                let achieve = this.state.achieve;
-                                achieve[i].mores.push({
-                                  num: "",
-                                  leaf: "",
-                                  content: "",
-                                });
-                                this.setState({
-                                  achieve
-                                })
-                              }}>
-                              <div style={{ display: "flex", justifyContent: "center", alignItems: "center", width: "100%", height: 160, border: "#45cdff dashed 1px", cursor: "pointer" }}>
-                                添加
-                              </div>
-
-                            </Col>
-
-
-
+                            {
+                              achieve[i].mores.length < 6 && <Col xxl={12} xl={12} lg={24}
+                                style={{ height: 160, marginBottom: 12 }} onClick={() => {
+                                  let achieve = this.state.achieve;
+                                  achieve[i].mores.push({
+                                    num: "",
+                                    leaf: "",
+                                    content: "",
+                                  });
+                                  this.setState({
+                                    achieve
+                                  })
+                                }}>
+                                <div style={{ display: "flex", justifyContent: "center", alignItems: "center", width: "100%", height: 160, border: "#45cdff dashed 1px", cursor: "pointer" }}>
+                                  添加
+                                </div>
+                              </Col>
+                            }
                           </Row>
                         </Card>
                       </Col>
@@ -595,20 +593,20 @@ class Aboutus extends Component {
                   })
                 }
                 {
-                  achieve.length<4&&
-                <Col xs={24} sm={24} md={12} lg={8} xl={8} xxl={8} style={{ marginBottom: 18 }}>
-                  <div className={styles.Icons} style={{ height: 500 }} onClick={() => {
-                    achieve.push({
-                      title: undefined,
-                      desc: undefined,
-                      mores: []
-                    });
-                    this.setState({ achieve })
-                  }}>
-                    <Icon type="plus" />
-                  </div>
-                </Col>
-              }
+                  achieve.length < 4 &&
+                  <Col xs={24} sm={24} md={12} lg={8} xl={8} xxl={8} style={{ marginBottom: 18 }}>
+                    <div className={styles.Icons} style={{ height: 500 }} onClick={() => {
+                      achieve.push({
+                        title: undefined,
+                        desc: undefined,
+                        mores: []
+                      });
+                      this.setState({ achieve })
+                    }}>
+                      <Icon type="plus" />
+                    </div>
+                  </Col>
+                }
 
               </Row>
 
