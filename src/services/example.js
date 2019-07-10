@@ -101,6 +101,19 @@ export async function insertcourse(params) {
   })
 }
 
+export async function insertedu(params) {
+  return request(`edu/service/insertedu`,{
+    method: 'post',
+    body: params
+  })
+}
+
+export async function deletedu(params) {
+  return request(`edu/service/deletedu`,{
+    method: 'post',
+    body: JSON.stringify(params)
+  })
+}
 //aboutus work_env
 
 export async function getenv(params) {
@@ -142,10 +155,31 @@ export async function getcourse(params) {
     method: 'get',
   })
 }
-
 export async function updatecourse(params) {
   return request(`edu/service/updatecourse`,{
     method: 'post',
     body: JSON.stringify(params)
   })
 }
+
+export async function getschool(params) {
+  return request(`edu/service/getschool`,{
+    method: 'get',
+  })
+}
+
+export async function updateschool(params) {
+  return request(`edu/service/updateschool`,{
+    method: 'post',
+    body: JSON.stringify(params)
+  })
+}
+
+export async function getedu(params) {
+  return request(`edu/service/getedu`,{
+    method: 'get',
+  })
+}
+
+
+

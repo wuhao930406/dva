@@ -1,7 +1,8 @@
 import {
   login, bannerupdate, bannerdelete, getall,
   getadv, updateadv, getaboutus, updateaboutus, getservice, updateservice,
-  getenv, envupdate, envdelete, insertdevlop, updatedevlop, getdevlop, getachieve, updateachieve, insertcourse, updatecourse, getcourse
+  getenv, envupdate, envdelete, insertdevlop, updatedevlop, getdevlop, getachieve, updateachieve,
+  insertcourse, updatecourse, getcourse, getschool, updateschool, getedu, insertedu,deletedu
 
 } from "../services/example";
 import { routerRedux } from 'dva/router'
@@ -22,12 +23,28 @@ export default {
     updatedevlop: {},
     getdevlop: [],
     getachieve: [],
-    updateachieve: [],
-    updatecourse: [],
-    getcourse: {}
+    getcourse: {},
+    getschool: {},
+    getedu: {}
   },
 
   effects: {
+    * getedu({ payload }, { call, put }) {
+      let res = yield call(getedu)
+      yield put({
+        type: 'updateState',
+        payload: { getedu: res.data }
+      })
+      return res.next
+    },
+    * getschool({ payload }, { call, put }) {
+      let res = yield call(getschool)
+      yield put({
+        type: 'updateState',
+        payload: { getschool: res.data }
+      })
+      return res.next
+    },
     * getcourse({ payload }, { call, put }) {
       let res = yield call(getcourse)
       yield put({
@@ -110,6 +127,15 @@ export default {
       })
       return res.next
     },
+    * updateschool({ payload }, { call, put }) {
+      let res = yield call(updateschool, payload)
+      yield put({
+        type: 'updateState',
+        payload: { code: res }
+      })
+      return res.next
+    },
+
     * getaboutus({ payload }, { call, put }) {
       let res = yield call(getaboutus)
       yield put({
@@ -152,6 +178,15 @@ export default {
       return res.next
     },
 
+    * insertedu({ payload }, { call, put }) {
+      let res = yield call(insertedu, payload)
+      yield put({
+        type: 'updateState',
+        payload: { insertedu: res }
+      })
+      return res.next
+    },
+
     * insertcourse({ payload }, { call, put }) {
       let res = yield call(insertcourse, payload)
       yield put({
@@ -172,10 +207,20 @@ export default {
       let res = yield call(updatedevlop, payload)
       yield put({
         type: 'updateState',
-        payload: { updatedevlop: res }
+        payload: { code: res }
       })
       return res.next
     },
+    
+    * deletedu({ payload }, { call, put }) {
+      let res = yield call(deletedu, payload)
+      yield put({
+        type: 'updateState',
+        payload: { code: res }
+      })
+      return res.next
+    },
+    
     * redirect({ payload }, { put }) {
       yield put(routerRedux.push(payload.url, payload.params));
       return true
