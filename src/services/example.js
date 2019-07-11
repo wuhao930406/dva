@@ -188,3 +188,14 @@ export async function updatedu(params) {
 }
 
 
+export async function getcooperate(params) {
+  return request(`edu/cooperate/getcooperate`,{
+    method: 'get',
+  })
+}
+export async function updatecooperate(params) {
+  return request(`edu/cooperate/updatecooperate`,{
+    method: 'post',
+    body: JSON.stringify(params)
+  })
+}

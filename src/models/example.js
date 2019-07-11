@@ -2,7 +2,8 @@ import {
   login, bannerupdate, bannerdelete, getall,
   getadv, updateadv, getaboutus, updateaboutus, getservice, updateservice,
   getenv, envupdate, envdelete, insertdevlop, updatedevlop, getdevlop, getachieve, updateachieve,
-  insertcourse, updatecourse, getcourse, getschool, updateschool, getedu, insertedu,deletedu,updatedu
+  insertcourse, updatecourse, getcourse, getschool, updateschool, getedu, insertedu, deletedu, updatedu,
+  getcooperate, updatecooperate
 
 } from "../services/example";
 import { routerRedux } from 'dva/router'
@@ -25,10 +26,19 @@ export default {
     getachieve: [],
     getcourse: {},
     getschool: {},
-    getedu: {}
+    getedu: {},
+    getcooperate: {}
   },
 
   effects: {
+    * getcooperate({ payload }, { call, put }) {
+      let res = yield call(getcooperate)
+      yield put({
+        type: 'updateState',
+        payload: { getcooperate: res.data }
+      })
+      return res.next
+    },
     * getedu({ payload }, { call, put }) {
       let res = yield call(getedu)
       yield put({
@@ -143,6 +153,14 @@ export default {
       })
       return res.next
     },
+    * updatecooperate({ payload }, { call, put }) {
+      let res = yield call(updatecooperate, payload)
+      yield put({
+        type: 'updateState',
+        payload: { code: res }
+      })
+      return res.next
+    },
     * getaboutus({ payload }, { call, put }) {
       let res = yield call(getaboutus)
       yield put({
@@ -218,7 +236,7 @@ export default {
       })
       return res.next
     },
-    
+
     * deletedu({ payload }, { call, put }) {
       let res = yield call(deletedu, payload)
       yield put({
@@ -227,7 +245,7 @@ export default {
       })
       return res.next
     },
-    
+
     * redirect({ payload }, { put }) {
       yield put(routerRedux.push(payload.url, payload.params));
       return true
