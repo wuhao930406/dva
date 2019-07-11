@@ -180,6 +180,11 @@ export async function getedu(params) {
     method: 'get',
   })
 }
-
+export async function updatedu(params) {
+  return request(`edu/service/updatedu`,{
+    method: 'post',
+    body: JSON.stringify(params)
+  })
+}
 
 

@@ -1,11 +1,11 @@
 import Uploadpic from '../../components/Uploadpic';
 import PageHead from '../../components/PageHead';
 import { Component } from 'react';
-import { Row, Col, Card, Icon, message, Input, InputNumber, Popconfirm, Skeleton, Tabs, DatePicker, Upload, Modal, Button } from 'antd';
+import { Row, Col, Card, Icon, message, Input, Alert, Popconfirm, Skeleton, Tabs, DatePicker, Upload, Modal, Button } from 'antd';
 import styles from '../IndexPage.css';
 import { connect } from 'dva';
 import locale from 'antd/lib/date-picker/locale/zh_CN';
-import moment from 'moment';
+import moment, { now } from 'moment';
 import 'moment/locale/zh-cn';
 moment.locale('zh-cn');
 const { MonthPicker } = DatePicker;
@@ -27,14 +27,14 @@ class Service extends Component {
     this.state = {
       previewVisible: false,
       previewImage: '',
-      fileList: [],
       loading: false,
       course: {
         coursedesc: "",
         cmodule: [{
           title: "",
           url: "",
-          pdfurl: ""
+          pdfurl: "",
+          nowpdf: ""
         }],
         cpro: [{
           title: "",
@@ -85,8 +85,24 @@ class Service extends Component {
       })
     })
     this.setNewState("getedu", null, () => {
+      let edu = JSON.parse(JSON.stringify(this.props.example.getedu)),
+        epro = edu.epro.map((item) => {
+          item.picarr = item.picarr ? item.picarr.split("|") : [];
+          item.idarr = item.idarr ? item.idarr.split("|") : [];
+          item.namearr = item.namearr ? item.namearr.split("|") : [];
+          item.fileList = item.idarr ? item.idarr.map((it, i) => {
+            return {
+              uid: it,
+              name: item.namearr[i],
+              url: "edu/" + item.picarr[i]
+            }
+          }) : []
+          return item;
+        })
+      edu.epro = epro;
+      console.log(edu)
       this.setState({
-        edu: this.props.example.getedu
+        edu: edu
       })
     })
   }
@@ -114,6 +130,7 @@ class Service extends Component {
         course.cmodule[i].url = imageUrl;
       } else {
         course.cmodule[i].pdfurl = imageUrl;
+        course.cmodule[i].nowpdf = info.file.name;
       }
       this.setState({
         course,
@@ -132,7 +149,8 @@ class Service extends Component {
         cmodule: [{
           title: "",
           url: "",
-          pdfurl: ""
+          pdfurl: "",
+          nowpdf: ""
         }],
         cpro: [{
           title: "",
@@ -208,6 +226,48 @@ class Service extends Component {
 
   }
 
+  resetEdu = () => {
+    this.setState({
+      edu: {
+        edudesc: "",
+        epro: [{
+          title: "",
+          desc: "",
+          picarr: []
+        }]
+      },
+    }, () => {
+      message.success("重置大型国际教育活动成功，提交之前保留原来的数据");
+    })
+  }
+  submitEdu = () => {
+    let edu = this.state.edu;
+    if (!edu.edudesc) {
+      message.warn("请输入大型国际教育活动简介");
+      return
+    }
+    if (edu.epro.length == 0) {
+      message.warn("请完善教育活动");
+      return
+    }
+    let arrc = edu.epro.filter((item) => { return !item.title || !item.desc })
+    if (arrc.length > 0) {
+      message.warn("请完善教育活动");
+      return
+    }
+    let postedu = JSON.parse(JSON.stringify(edu)),
+      postepro = postedu.epro.map((item, i) => {
+        item.picarr = item.picarr ? item.picarr.join("|") : "";
+        item.idarr = item.idarr ? item.idarr.join("|") : "";
+        item.namearr = item.namearr ? item.namearr.join("|") : "";
+        delete item.fileList
+        return item
+      })
+    postedu.epro = postepro;
+    this.setNewState("updatedu", postedu)
+  }
+
+
   onRef = (ref) => {
     this.child = ref
   }
@@ -226,11 +286,11 @@ class Service extends Component {
   handleChanges(info, i) {
     let { file, fileList } = info;
     //insertedu,deletedu 
-
     if (file.status == "removed") {
-      let index = 0, { edu:{epro} } = this.state;
-      if (this.state.fileList) {
-        this.state.fileList.map((item,ins) => {
+      let index = 0,
+        { edu: { epro } } = this.state;
+      if (epro[i].fileList) {
+        epro[i].fileList.map((item, ins) => {
           if (item.uid == file.uid) {
             index = ins
           }
@@ -239,15 +299,18 @@ class Service extends Component {
       let postData = {
         url: epro[i].picarr[index]
       }
-      this.setNewState("deletedu",postData,()=>{
+      this.setNewState("deletedu", postData, () => {
+        let edu = this.state.edu;
+        edu.epro[i].fileList = fileList;
+        edu.epro[i].picarr.splice(index, 1);
+        edu.epro[i].idarr.splice(index, 1);
+        edu.epro[i].namearr.splice(index, 1);
         this.setState({
-          fileList
+          edu
         })
       })
       return
     }
-
-    
     let type = "image"
     const isJPG = info.file.type.indexOf(type) != -1;
     if (!isJPG) {
@@ -262,10 +325,11 @@ class Service extends Component {
       let imageUrl = res.data.url;
       let edu = this.state.edu;
       edu.epro[i].picarr.push(imageUrl);
-      console.log(edu)
+      edu.epro[i].idarr.push(file.uid);
+      edu.epro[i].namearr.push(file.name);
+      edu.epro[i].fileList = fileList;
       this.setState({
         edu,
-        fileList,
       })
     })
   };
@@ -273,7 +337,7 @@ class Service extends Component {
 
 
   render() {
-    const { course, school, edu, previewVisible, previewImage, fileList } = this.state,
+    const { course, school, edu, previewVisible, previewImage } = this.state,
       { load1, load2 } = this.props;
     let cmodule = course.cmodule;
     let cpro = course.cpro;
@@ -336,8 +400,8 @@ class Service extends Component {
                                   cmodule
                                 })
                               }}></Input>
-                              <Row>
-                                <Col span={12}>
+                              <Row style={{display:"flex"}}>
+                                <Col style={{width:150}}>
                                   <p>添加图片：</p>
                                   <div style={{ width: "100%" }}>
                                     <Upload
@@ -353,8 +417,8 @@ class Service extends Component {
                                   </div>
 
                                 </Col>
-                                <Col span={12}>
-                                  <p>添加pdf：</p>
+                                <Col style={{flex:1}}>
+                                  <p style={{marginBottom:17}}>添加pdf：</p>
                                   <Upload
                                     showUploadList={false}
                                     action={""}
@@ -362,9 +426,12 @@ class Service extends Component {
                                     onChange={(info) => this.handleChange(info, i, "pdf")}
                                   >
                                     <Button>
-                                      <Icon type="upload" /> 上传(只能上传1份)
-                                  </Button>
+                                      <Icon type="upload" /> 上传
+                                    </Button>
                                   </Upload>
+                                  {
+                                    cmodule[i].nowpdf && <a href={cmodule[i].pdfurl} target="_blank" style={{ display: "block", marginTop: 12 }}><Alert message={cmodule[i].nowpdf} type="success"></Alert></a>
+                                  }
                                 </Col>
                               </Row>
 
@@ -379,7 +446,8 @@ class Service extends Component {
                           cmodule.push({
                             title: undefined,
                             url: undefined,
-                            pdfurl: undefined
+                            pdfurl: undefined,
+                            nowpdf: ""
                           });
                           this.setState({ cmodule })
                         }}>
@@ -566,7 +634,7 @@ class Service extends Component {
                               <Upload
                                 action=""
                                 listType="picture-card"
-                                fileList={fileList}
+                                fileList={epro[i].fileList}
                                 beforeUpload={beforeUpload}
                                 onPreview={(file) => this.handlePreview(file, i)}
                                 onChange={(info) => this.handleChanges(info, i)}
@@ -580,11 +648,14 @@ class Service extends Component {
                       })
                     }
                     <Col xs={24} sm={24} md={12} lg={12} xl={8} xxl={8} style={{ marginBottom: 18 }}>
-                      <div className={styles.Icons} style={{ height: 242 }} onClick={() => {
+                      <div className={styles.Icons} style={{ height: 353 }} onClick={() => {
                         epro.push({
                           title: undefined,
                           desc: undefined,
-                          picarr: []
+                          picarr: [],
+                          idarr: [],
+                          namearr: [],
+                          fileList: []
                         });
                         this.setState({ epro })
                       }}>

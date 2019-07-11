@@ -2,7 +2,7 @@ import {
   login, bannerupdate, bannerdelete, getall,
   getadv, updateadv, getaboutus, updateaboutus, getservice, updateservice,
   getenv, envupdate, envdelete, insertdevlop, updatedevlop, getdevlop, getachieve, updateachieve,
-  insertcourse, updatecourse, getcourse, getschool, updateschool, getedu, insertedu,deletedu
+  insertcourse, updatecourse, getcourse, getschool, updateschool, getedu, insertedu,deletedu,updatedu
 
 } from "../services/example";
 import { routerRedux } from 'dva/router'
@@ -135,7 +135,14 @@ export default {
       })
       return res.next
     },
-
+    * updatedu({ payload }, { call, put }) {
+      let res = yield call(updatedu, payload)
+      yield put({
+        type: 'updateState',
+        payload: { code: res }
+      })
+      return res.next
+    },
     * getaboutus({ payload }, { call, put }) {
       let res = yield call(getaboutus)
       yield put({
