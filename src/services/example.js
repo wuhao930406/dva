@@ -199,3 +199,15 @@ export async function updatecooperate(params) {
     body: JSON.stringify(params)
   })
 }
+
+export async function getcontact(params) {
+  return request(`edu/contact/getcontact`,{
+    method: 'get',
+  })
+}
+
+export async function insertqrcode(params) {
+  return request(`edu/contact/insertqrcode`,{
+    method: 'get',
+  })
+}

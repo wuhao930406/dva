@@ -6,6 +6,8 @@ import Page from './routes/index/Page'
 import Aboutus from './routes/index/Aboutus'
 import Service from './routes/index/Service'
 import Cooperate from './routes/index/Cooperate'
+import Contact from './routes/index/Contact'
+
 import NotFound from './routes/NotFound'
 
 function IndexRouterConfig() {
@@ -18,6 +20,7 @@ function IndexRouterConfig() {
       <Route path="/main/aboutus" component={Aboutus} />
       <Route path="/main/service" component={Service} />
       <Route path="/main/cooperate" component={Cooperate} />
+      <Route path="/main/contact" component={Contact} />
       <Route component={NotFound} />
 
     </Switch>

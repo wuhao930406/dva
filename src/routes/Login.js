@@ -55,7 +55,7 @@ class Login extends Component{
       if (!err) {
        //登录！！
         this.setNewState("login",{username:values.username,password:values.password},(res)=>{
-          this.setNewState("redirect",{url:"/"})
+          this.setNewState("redirect",{url:"/main"})
         })
 
       }

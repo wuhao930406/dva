@@ -21,7 +21,7 @@ function RouterConfig({ history,app }) {
   return (
     <Router history={history}>
       <Switch>
-        <Route exact path="/" render={() => <Redirect to="/main"/>} />
+        <Route exact path="/" render={() => <Redirect to="/login"/>} />
         <Route path="/main" component={IndexPage} />
         <Route path="/login" exact component={Login} />
         <Route render={() => <Redirect to="/main/404"/>} />

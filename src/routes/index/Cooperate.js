@@ -56,10 +56,83 @@ class Cooperate extends Component {
 
   componentDidMount() {
     this.setNewState("getcooperate", null, () => {
-      this.setState({
-        cooperate: this.props.example.getcooperate
-      })
+      let cooperate = this.props.example.getcooperate;
+
+      if (cooperate.model.length === 0 || cooperate.adv.length === 0) {
+
+      } else {
+        this.setState({
+          cooperate: this.props.example.getcooperate
+        })
+      }
+
     })
+  }
+
+  resetFileList = () => {
+    message.destroy();
+    this.setState({
+      cooperate: {
+        model: [{
+          title: "",
+          jumpurl: "",
+          desc: "",
+          totaldesc: ""
+        }],
+        adv: [{
+          title: "",
+          desc: ""
+        }]
+      }
+    }, () => {
+      message.success("重置合作伙伴们成功，提交之前保留原来的数据");
+    })
+
+
+  }
+
+
+  submitcooperate = () => {
+    let cooperate = this.state.cooperate;
+
+    if (!cooperate.model[0]) {
+      message.warn("请输入合作模式简介");
+      return
+    }
+    if (!cooperate.model[0].totaldesc) {
+      message.warn("请输入合作模式简介");
+      return
+    }
+
+    if (cooperate.adv.length == 0) {
+      message.warn("请完善我们的优势");
+      return
+    }
+    let arrs = cooperate.adv.filter((item) => { return !item.title || !item.desc })
+
+    if (arrs.length > 0) {
+      message.warn("请完善我们的优势");
+      return
+    }
+
+    if (cooperate.model.length == 0) {
+      message.warn("请完善模式分类");
+      return
+    }
+
+    let arrc = cooperate.model.filter((item) => { return !item.title || !item.desc })
+
+    if (arrc.length > 0) {
+      message.warn("请完善模式分类");
+      return
+    }
+
+
+
+    this.setNewState("updatecooperate", this.state.cooperate)
+
+
+
   }
 
 
@@ -137,9 +210,9 @@ class Cooperate extends Component {
                   placeholder='请输入合作模式的描述（最多600个字）'
                   rows={6}
                   maxLength={600}
-                  value={cooperate.cooperatedesc}
+                  value={model[0] ? model[0].totaldesc : ""}
                   onChange={(e) => {
-                    cooperate.cooperatedesc = e.target.value
+                    cooperate.model[0].totaldesc = e.target.value
                     this.setState({
                       cooperate
                     })

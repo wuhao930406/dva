@@ -2,11 +2,11 @@ import { Row,Col,Card,Icon,PageHeader  } from 'antd';
 import { Link } from 'dva/router';
 import styles from '../IndexPage.css';
 const HomePage = ({children}) => {
-  const models = [{name:'首页',icon:"edit",path:"/main/page"}, 
-  {name:'关于我们',icon:"form",path:"/main/aboutus"}, 
-  {name:'项目与服务',icon:"copy",path:"/main/service"}, 
-  {name:'合作伙伴',icon:"scissor",path:"/main/cooperate"}, 
-  {name:'模块5',icon:"delete",path:"/page"}, 
+  const models = [{name:'首页',icon:"home",path:"/main/page"}, 
+  {name:'关于我们',icon:"user",path:"/main/aboutus"}, 
+  {name:'项目与服务',icon:"profile",path:"/main/service"}, 
+  {name:'合作伙伴',icon:"api",path:"/main/cooperate"}, 
+  {name:'联系我们',icon:"phone",path:"/main/contact"}, 
   {name:'模块6',icon:"snippets",path:"/page"}];
     return (
       <Row>

@@ -3,7 +3,7 @@ import {
   getadv, updateadv, getaboutus, updateaboutus, getservice, updateservice,
   getenv, envupdate, envdelete, insertdevlop, updatedevlop, getdevlop, getachieve, updateachieve,
   insertcourse, updatecourse, getcourse, getschool, updateschool, getedu, insertedu, deletedu, updatedu,
-  getcooperate, updatecooperate
+  getcooperate, updatecooperate,getcontact,insertqrcode
 
 } from "../services/example";
 import { routerRedux } from 'dva/router'
@@ -20,6 +20,7 @@ export default {
     getservice: [],
     getenv: [],
     insertdevlop: {},
+    insertqrcode:{},
     insertcourse: {},
     updatedevlop: {},
     getdevlop: [],
@@ -27,10 +28,19 @@ export default {
     getcourse: {},
     getschool: {},
     getedu: {},
-    getcooperate: {}
+    getcooperate: {},
+    getcontact:{}
   },
 
   effects: {
+    * getcontact({ payload }, { call, put }) {
+      let res = yield call(getcooperate)
+      yield put({
+        type: 'updateState',
+        payload: { getcontact: res.data }
+      })
+      return res.next
+    },
     * getcooperate({ payload }, { call, put }) {
       let res = yield call(getcooperate)
       yield put({
@@ -228,6 +238,15 @@ export default {
       })
       return res.next
     },
+    * insertqrcode({ payload }, { call, put }) {
+      let res = yield call(insertqrcode, payload)
+      yield put({
+        type: 'updateState',
+        payload: { insertqrcode: res }
+      })
+      return res.next
+    },
+    
     * updatedevlop({ payload }, { call, put }) {
       let res = yield call(updatedevlop, payload)
       yield put({
