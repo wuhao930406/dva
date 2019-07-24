@@ -211,3 +211,10 @@ export async function insertqrcode(params) {
     method: 'get',
   })
 }
+
+export async function updatecontact(params) {
+  return request(`edu/contact/updatecontact`,{
+    method: 'post',
+    body: JSON.stringify(params)
+  })
+}

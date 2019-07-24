@@ -33,10 +33,17 @@ class Contact extends Component {
   constructor() {
     super()
     this.state = {
-      contact: {
-
-      },
-      imageUrl: ""
+      imageUrl: "",
+      contactlist: [
+        {
+          phone: "",
+          desc: ""
+        },
+        {
+          phone: "",
+          desc: ""
+        }
+      ]
 
 
     }
@@ -57,10 +64,23 @@ class Contact extends Component {
 
   componentDidMount() {
     this.setNewState("getcontact", null, () => {
+      let res = this.props.example.getcontact.contact;
+      let data = {
+        phone:res.phone,
+        address:res.address,
+        qq:res.qq,
+        qrcode:{
+          uid:moment().valueOf(),
+          name:"demo",
+          url:res.qrcode,
+          status: 'done',
+        }
+      }
       this.setState({
-        contact: this.props.example.getcontact
+        imageUrl:`/edu${res.qrcode}`,
+        contactlist:this.props.example.getcontact.model
       })
-
+      this.props.form.setFieldsValue(data)
     })
   }
 
@@ -78,9 +98,19 @@ class Contact extends Component {
 
 
   submitcontact = () => {
+    this.props.form.validateFields((err, values) => {
+      if (!err) {
+        values.qrcode = values.qrcode[0]?values.qrcode[0].response.data.url:values.qrcode.url;
+        let postdata = {
+          contact: values,
+          model:this.state.contactlist
+        }
+        this.setNewState("updatecontact",postdata,()=>{
+        })
 
+      }
+    });
 
-    //this.setNewState("updatecontact", this.state.contact)
 
   }
 
@@ -94,7 +124,7 @@ class Contact extends Component {
       // Get this url from response in real world.
       let imageUrl = info.file.response.data.url;
       this.setState({
-        imageUrl:imageUrl?`/edu${imageUrl}`:"",
+        imageUrl: imageUrl ? `/edu${imageUrl}` : "",
         loading: false
       })
     }
@@ -106,14 +136,11 @@ class Contact extends Component {
 
 
   render() {
-    const { contact, imageUrl } = this.state,
+    const {  imageUrl, contactlist } = this.state,
       { load1 } = this.props;
-
     const { getFieldDecorator } = this.props.form;
 
 
-    let model = contact.model;
-    let adv = contact.adv;
     let mostcol = {
       xxl: 8,
       xl: 8,
@@ -124,9 +151,9 @@ class Contact extends Component {
     }
 
     const uploadButton = (
-      <div style={{width:102}}>
+      <div style={{ width: 102 }}>
         <Icon type={this.state.loading ? 'loading' : 'plus'} />
-        <div className="ant-upload-text">Upload</div>
+        <div className="ant-upload-text">上传</div>
       </div>
     );
 
@@ -192,10 +219,67 @@ class Contact extends Component {
                         action="/edu/contact/insertqrcode"
                         beforeUpload={beforeUpload}
                       >
-                        {imageUrl ? <img style={{width:102,height:86}} src={imageUrl} alt="avatar" /> : uploadButton}
+                        {imageUrl ? <img style={{ width: 102, height: 86 }} src={imageUrl} alt="avatar" /> : uploadButton}
                       </Upload>,
                     )}
                   </Form.Item>
+                </Col>
+                <Col span={24}>
+                  <p style={{ marginTop: 12, padding: 12, border: "#f0f0f0 solid 1px",backgroundColor:"#f9f9f9", color: "#333",fontSize:16 }}>联系方式</p>
+                </Col>
+                <Col {...mostcol}>
+                  <p style={{ marginTop: 12 }}>联系方式1</p>
+                  <Input
+                    placeholder="请输入联系电话"
+                    value={contactlist[0].phone ? contactlist[0].phone : undefined}
+                    onChange={(e) => {
+                      let val = e.target.value;
+                      contactlist[0].phone = val;
+                      this.setState({
+                        contactlist
+                      })
+
+                    }}
+                  ></Input>
+                  <p style={{ marginTop: 0 }}>联系方式1描述</p>
+                  <Input
+                    placeholder="联系方式1描述"
+                    value={contactlist[0].desc ? contactlist[0].desc : undefined}
+                    onChange={(e) => {
+                      let val = e.target.value;
+                      contactlist[0].desc = val;
+                      this.setState({
+                        contactlist
+                      })
+                    }}
+                  ></Input>
+                </Col>
+                <Col {...mostcol}>
+                  <p style={{ marginTop: 12 }}>联系方式2</p>
+                  <Input
+                    placeholder="请输入联系电话"
+                    value={contactlist[1].phone ? contactlist[1].phone : undefined}
+                    onChange={(e) => {
+                      let val = e.target.value;
+                      contactlist[1].phone = val;
+                      this.setState({
+                        contactlist
+                      })
+
+                    }}
+                  ></Input>
+                  <p style={{ marginTop: 0 }}>联系方式2描述</p>
+                  <Input
+                    placeholder="联系方式1描述"
+                    value={contactlist[1].desc ? contactlist[1].desc : undefined}
+                    onChange={(e) => {
+                      let val = e.target.value;
+                      contactlist[1].desc = val;
+                      this.setState({
+                        contactlist
+                      })
+                    }}
+                  ></Input>
                 </Col>
 
 

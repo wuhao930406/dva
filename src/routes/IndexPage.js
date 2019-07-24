@@ -5,12 +5,11 @@ import {
   Icon, Menu, Dropdown, Drawer, 
   Button, Row, Col, Layout, Avatar, Divider
 } from 'antd';
-import { Link } from 'dva/router';
+import { Link,withRouter } from 'dva/router';
 import ScrollBar from '../components/ScrollBar';
 import IndexRouterConfig from '../indexrouter'
 
 const { Header, Content, Footer } = Layout;
-
 
 class IndexPage extends Component {
   state = { visible: false };
@@ -65,7 +64,7 @@ class IndexPage extends Component {
 
           </div>
         </Header>
-        <Content className={styles.indexcontent}>
+        <Content className={styles.indexcontent} style={{height:"100vh"}}>
           <div style={{ height: "100%", overflow: "auto", background: "#fff",overflowX:"hidden"
           }}>
             <ScrollBar>
@@ -103,4 +102,4 @@ class IndexPage extends Component {
   }
 }
 
-export default connect()(IndexPage);
+export default withRouter(connect()(IndexPage));

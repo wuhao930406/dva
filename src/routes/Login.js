@@ -3,13 +3,14 @@ import { connect } from 'dva';
 import { Form, Icon, Input, Button, Checkbox } from 'antd';
 import styles from './IndexPage.css';
 import moment from 'moment';
-
+import { Link,withRouter } from 'dva/router';
 @connect(({ example }) => ({
   example
 }))
 class Login extends Component{
   constructor(props){
      super(props);
+     this.t = null;
      let time = moment(new Date().getTime()).format("YYYY-MM-DD | HH:mm:ss");
      this.state={
        time:this.getArrTime(time)
@@ -38,7 +39,7 @@ class Login extends Component{
   }
 
   componentDidMount(){
-    setInterval(() => {
+    this.t = setInterval(() => {
       let time = moment(new Date().getTime()).format("YYYY-MM-DD | HH:mm:ss");
       this.setState({
         time:this.getArrTime(time)
@@ -47,6 +48,11 @@ class Login extends Component{
 
   }
 
+  componentWillUnmount(){
+
+    clearInterval(this.t)
+
+  }
 
   handleSubmit = e => {
     e.preventDefault();
@@ -129,4 +135,4 @@ class Login extends Component{
 
 Login =  Form.create({ name: 'normal_login' })(Login)//挂载Form
 
-export default Login;
+export default withRouter(Login);
