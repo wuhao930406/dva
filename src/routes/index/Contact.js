@@ -69,6 +69,8 @@ class Contact extends Component {
         phone:res.phone,
         address:res.address,
         qq:res.qq,
+        email:res.email,
+        tomap:res.tomap,
         qrcode:{
           uid:moment().valueOf(),
           name:"demo",
@@ -204,8 +206,32 @@ class Contact extends Component {
                       />,
                     )}
                   </Form.Item>
+                </Col>  
+                <Col {...mostcol}>
+                  <Form.Item label="高德/百度地图导航页">
+                    {getFieldDecorator('tomap', {
+                      rules: [{ required: true, message: '请输入高德/百度地图导航页!' }],
+                    })(
+                      <Input
+                        prefix={<Icon type="pushpin" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                        placeholder="请输入高德/百度地图导航页"
+                      />,
+                    )}
+                  </Form.Item>
                 </Col>
-                <Col span={24}>
+                <Col {...mostcol}>
+                  <Form.Item label="邮箱">
+                    {getFieldDecorator('email', {
+                      rules: [{ required: true, message: '请输入邮箱!' }],
+                    })(
+                      <Input
+                        prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                        placeholder="请输入邮箱"
+                      />,
+                    )}
+                  </Form.Item>
+                </Col>
+                <Col  {...mostcol}>
                   <Form.Item label="上传公众号二维码">
                     {getFieldDecorator('qrcode', {
                       rules: [{ required: true, message: '请上传公众号二维码!' }],
