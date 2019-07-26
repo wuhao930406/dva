@@ -7,7 +7,7 @@ import Aboutus from './routes/index/Aboutus'
 import Service from './routes/index/Service'
 import Cooperate from './routes/index/Cooperate'
 import Contact from './routes/index/Contact'
-
+import Public from './routes/index/Public'
 import NotFound from './routes/NotFound'
 
 class IndexRouterConfig extends React.Component {
@@ -21,6 +21,7 @@ class IndexRouterConfig extends React.Component {
         <Route path="/main/service" component={Service} />
         <Route path="/main/cooperate" component={Cooperate} />
         <Route path="/main/contact" component={Contact} />
+        <Route path="/main/public" component={Public} />
         <Route component={NotFound} />
       </Switch>
     );

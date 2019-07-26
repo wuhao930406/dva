@@ -206,11 +206,6 @@ export async function getcontact(params) {
   })
 }
 
-export async function insertqrcode(params) {
-  return request(`edu/contact/insertqrcode`,{
-    method: 'get',
-  })
-}
 
 export async function updatecontact(params) {
   return request(`edu/contact/updatecontact`,{
@@ -218,3 +213,29 @@ export async function updatecontact(params) {
     body: JSON.stringify(params)
   })
 }
+
+export async function getpublic(params) {
+  return request(`edu/public/getpublic`,{
+    method: 'get',
+  })
+}
+
+export async function insertpublic(params) {
+  return request(`edu/public/insertpublic`,{
+    method: 'post',
+    body: params
+  })
+}
+
+export async function updatepublic(params) {
+  return request(`edu/public/updatepublic`,{
+    method: 'post',
+    body: JSON.stringify(params)
+  })
+}
+//getpublic,insertpublic,updatepublic
+
+
+
+
+

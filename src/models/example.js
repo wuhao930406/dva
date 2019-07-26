@@ -3,7 +3,8 @@ import {
   getadv, updateadv, getaboutus, updateaboutus, getservice, updateservice,
   getenv, envupdate, envdelete, insertdevlop, updatedevlop, getdevlop, getachieve, updateachieve,
   insertcourse, updatecourse, getcourse, getschool, updateschool, getedu, insertedu, deletedu, updatedu,
-  getcooperate, updatecooperate, getcontact, insertqrcode, updatecontact
+  getcooperate, updatecooperate, getcontact, updatecontact,
+  getpublic,insertpublic,updatepublic
 
 } from "../services/example";
 import { routerRedux } from 'dva/router'
@@ -14,15 +15,15 @@ export default {
   state: {
     login: "",
     getall: [],
+    getpublic:[],
     getadv: [],
     getaboutus: [],
     code: "",
     getservice: [],
     getenv: [],
     insertdevlop: {},
-    insertqrcode: {},
+    insertpublic:{},
     insertcourse: {},
-    updatedevlop: {},
     getdevlop: [],
     getachieve: [],
     getcourse: {},
@@ -32,7 +33,15 @@ export default {
     getcontact: {}
   },
 
-  effects: {
+  effects: {    
+    * getpublic({ payload }, { call, put }) {
+      let res = yield call(getpublic)
+      yield put({
+        type: 'updateState',
+        payload: { getpublic: res.data }
+      })
+      return res.next
+    },
     * getcontact({ payload }, { call, put }) {
       let res = yield call(getcontact)
       yield put({
@@ -247,15 +256,24 @@ export default {
       })
       return res.next
     },
-    * insertqrcode({ payload }, { call, put }) {
-      let res = yield call(insertqrcode, payload)
+   * insertpublic({ payload }, { call, put }) {
+      let res = yield call(insertpublic, payload)
       yield put({
         type: 'updateState',
-        payload: { insertqrcode: res }
+        payload: { insertpublic: res }
       })
       return res.next
     },
-
+    
+    * updatepublic({ payload }, { call, put }) {
+      let res = yield call(updatepublic, payload)
+      yield put({
+        type: 'updateState',
+        payload: { code: res }
+      })
+      return res.next
+    },
+    
     * updatedevlop({ payload }, { call, put }) {
       let res = yield call(updatedevlop, payload)
       yield put({
