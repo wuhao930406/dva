@@ -235,7 +235,17 @@ export async function updatepublic(params) {
 }
 //getpublic,insertpublic,updatepublic
 
+export async function getwx(params) {
+  return request(`edu/getwx`,{
+    method: 'get',
+  })
+}
 
-
+export async function deletewx(params) {
+  return request(`edu/deletewx`,{
+    method: 'post',
+    body: JSON.stringify(params)
+  })
+}
 
 

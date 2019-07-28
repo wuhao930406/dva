@@ -4,7 +4,7 @@ import {
   getenv, envupdate, envdelete, insertdevlop, updatedevlop, getdevlop, getachieve, updateachieve,
   insertcourse, updatecourse, getcourse, getschool, updateschool, getedu, insertedu, deletedu, updatedu,
   getcooperate, updatecooperate, getcontact, updatecontact,
-  getpublic,insertpublic,updatepublic
+  getpublic, insertpublic, updatepublic, getwx, deletewx
 
 } from "../services/example";
 import { routerRedux } from 'dva/router'
@@ -15,14 +15,14 @@ export default {
   state: {
     login: "",
     getall: [],
-    getpublic:[],
+    getpublic: [],
     getadv: [],
     getaboutus: [],
     code: "",
     getservice: [],
     getenv: [],
     insertdevlop: {},
-    insertpublic:{},
+    insertpublic: {},
     insertcourse: {},
     getdevlop: [],
     getachieve: [],
@@ -30,10 +30,19 @@ export default {
     getschool: {},
     getedu: {},
     getcooperate: {},
-    getcontact: {}
+    getcontact: {},
+    getwx: [],
   },
 
-  effects: {    
+  effects: {
+    * getwx({ payload }, { call, put }) {
+      let res = yield call(getwx)
+      yield put({
+        type: 'updateState',
+        payload: { getwx: res.data }
+      })
+      return res.next
+    },
     * getpublic({ payload }, { call, put }) {
       let res = yield call(getpublic)
       yield put({
@@ -122,7 +131,14 @@ export default {
       })
       return res.next
     },
-
+    * deletewx({ payload }, { call, put }) {
+      let res = yield call(deletewx, payload)
+      yield put({
+        type: 'updateState',
+        payload: { code: res }
+      })
+      return res.next
+    },
 
     * getservice({ payload }, { call, put }) {
       let res = yield call(getservice)
@@ -256,7 +272,7 @@ export default {
       })
       return res.next
     },
-   * insertpublic({ payload }, { call, put }) {
+    * insertpublic({ payload }, { call, put }) {
       let res = yield call(insertpublic, payload)
       yield put({
         type: 'updateState',
@@ -264,7 +280,7 @@ export default {
       })
       return res.next
     },
-    
+
     * updatepublic({ payload }, { call, put }) {
       let res = yield call(updatepublic, payload)
       yield put({
@@ -273,7 +289,7 @@ export default {
       })
       return res.next
     },
-    
+
     * updatedevlop({ payload }, { call, put }) {
       let res = yield call(updatedevlop, payload)
       yield put({

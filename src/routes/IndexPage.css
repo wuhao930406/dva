@@ -88,7 +88,8 @@ button,img{
   background-color:rgba(0,0,0,0.1)
 }
 .indexcol p{
-  margin-top: 1em;
+  margin-top: 0.5em;
+  margin-bottom: 0.5em
 }
 .indexheader{
   background-color: #ffffff !important;
@@ -176,7 +177,12 @@ button,img{
     left:100%
   }
 }
-
+:global .ant-empty-normal{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
 .iconp{
   text-align: center;
   margin: 0;

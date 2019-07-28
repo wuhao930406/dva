@@ -487,7 +487,7 @@ class Aboutus extends Component {
                             achieve.splice(i, 1);
                             this.setState({ achieve })
                           }}>
-                            <a><Icon type="minus-circle" /> &nbsp;删除</a>
+                            <a style={{color:"#ff5000"}}><Icon type="minus-circle" /> &nbsp;删除</a>
                           </Popconfirm>
                         }>
                           <Input style={{ marginTop: 16 }} placeholder='请输入企业成绩标题' value={item.title} onChange={(e) => {
@@ -515,7 +515,7 @@ class Aboutus extends Component {
                               item.mores.map((itemz, n) => {
                                 return (
                                   <Col xxl={12} xl={12} lg={24} key={n} style={{ marginBottom: 12 }}>
-                                    <Card title={<span style={{ fontSize: 14, color: "#45cdff" }}>{"成果" + (n + 1)}</span>} extra={<a onClick={() => {
+                                    <Card title={<span style={{ fontSize: 14, color: "#666" }}>{"成果" + (n + 1)}</span>} extra={<a style={{color:"#ff5000"}} onClick={() => {
                                       let achieve = this.state.achieve;
                                       let mores = achieve[i].mores;
                                       mores.splice(n, 1);
@@ -578,7 +578,7 @@ class Aboutus extends Component {
                                     achieve
                                   })
                                 }}>
-                                <div style={{ display: "flex", justifyContent: "center", alignItems: "center", width: "100%", height: 160, border: "#45cdff dashed 1px", cursor: "pointer" }}>
+                                <div style={{ display: "flex", justifyContent: "center", alignItems: "center", width: "100%", height: 160, border: "#45cdff dashed 1px", cursor: "pointer",color:"#45cdff" }}>
                                   添加
                                 </div>
                               </Col>

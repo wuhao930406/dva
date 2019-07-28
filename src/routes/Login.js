@@ -4,8 +4,9 @@ import { Form, Icon, Input, Button, Checkbox } from 'antd';
 import styles from './IndexPage.css';
 import moment from 'moment';
 import { Link,withRouter } from 'dva/router';
-@connect(({ example }) => ({
-  example
+@connect(({ example,loading }) => ({
+  example,
+  loads:loading.effects['example/login'],
 }))
 class Login extends Component{
   constructor(props){
@@ -119,7 +120,7 @@ class Login extends Component{
               valuePropName: 'checked',
               initialValue: true,
             })(<Checkbox>记住密码</Checkbox>)}
-            <Button size="large" type="primary" htmlType="submit" className="login-form-button" style={{width:"100%",marginTop:12}}>
+            <Button loading={this.props.loads} size="large" type="primary" htmlType="submit" className="login-form-button" style={{width:"100%",marginTop:12}}>
               立即登录
             </Button>
           </Form.Item>

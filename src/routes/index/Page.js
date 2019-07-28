@@ -67,7 +67,7 @@ class Page extends Component {
     this.setNewState("getall", null, () => {
       this.setState({
         fileList: this.props.example.getall.map((item) => {
-          item.url = `http://localhost:8000/edu` + item.url;
+          item.url = `/edu` + item.url;
           return item
         })
       })
