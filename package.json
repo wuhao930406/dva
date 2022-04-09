@@ -11,7 +11,7 @@
     "babel-plugin-import": "^1.11.2",
     "dva": "^2.4.1",
     "dva-loading": "^3.0.9",
-    "moment": "^2.24.0",
+    "moment": "^2.29.2",
     "qs": "^6.7.0",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
